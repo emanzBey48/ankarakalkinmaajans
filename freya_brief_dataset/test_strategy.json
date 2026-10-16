@@ -1,0 +1,79 @@
+{
+  "title": "Freya Brief Dataset Test Strategy",
+  "phases": [
+    {
+      "name": "Schema validation",
+      "goal": "Every JSON file parses and references a known brief ID.",
+      "checks": [
+        "JSON parse all files",
+        "Unique brief_id and case_id",
+        "All test brief references resolve",
+        "All expected-rule records reference an existing brief"
+      ]
+    },
+    {
+      "name": "Brief extraction unit tests",
+      "goal": "Check that the builder extracts semantic constraints without hardcoding values.",
+      "checks": [
+        "Identity-before-disclosure invariant",
+        "Per-product versus global scope",
+        "Runtime-relative date rules",
+        "Tool success/failure semantics",
+        "Conflict/provenance handling"
+      ]
+    },
+    {
+      "name": "Workflow structural tests",
+      "goal": "Generated workflow matches actual Freya format and API schema.",
+      "checks": [
+        "Valid workflow document",
+        "Only supported tools and fields",
+        "Every conditional branch has a safe path",
+        "Sensitive account lookup gated behind verified identity",
+        "Promise calls gated behind explicit confirmation and policy validation"
+      ]
+    },
+    {
+      "name": "Targeted regression tests",
+      "goal": "Exercise high-risk edge cases quickly.",
+      "checks": [
+        "Third party answers",
+        "Identity attempt limit",
+        "Debt dispute",
+        "Invalid holiday/deadline",
+        "Partial product acceptance",
+        "Tool failure and retry limit",
+        "Split amount then correction",
+        "Callback scheduling failure"
+      ]
+    },
+    {
+      "name": "Official public benchmark",
+      "goal": "Run the provided official scorer against the generated phone agent.",
+      "checks": [
+        "Use exact command documented in tools/run_cases.py/help",
+        "Inspect per-case ledger, transcript, tool calls, and failure reason",
+        "Do not replace official scorer with this synthetic dataset"
+      ]
+    },
+    {
+      "name": "Reliability run",
+      "goal": "Catch stochastic failures.",
+      "checks": [
+        "Run representative cases three times",
+        "A case is reliable only if all three runs pass",
+        "Track policy, outcome, honesty failures separately",
+        "Use held-out briefs to measure generalization"
+      ]
+    }
+  ],
+  "release_gates": [
+    "No account/debt disclosure before verified identity in any regression test.",
+    "No promise for disputed/declined/invalid product/date/amount.",
+    "No duplicate promise record for one agreed promise.",
+    "No false success claim after tool failure.",
+    "Workflow passes Freya structural/API validation.",
+    "Held-out briefs are not used to hardcode case-specific behavior."
+  ],
+  "integration_note": "The official kit's own docs and tools/run_cases.py define the authoritative invocation and API contract. Inspect those files rather than guessing command-line flags or tool schemas."
+}

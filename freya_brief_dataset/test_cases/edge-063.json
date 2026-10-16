@@ -1,0 +1,16 @@
+{
+  "case_id": "EDGE-063",
+  "brief_id": "BRIEF-009",
+  "scenario": "one_product_disputed_other_accepted",
+  "difficulty": "hard",
+  "customer_script": "Customer disputes one product but explicitly accepts a valid promise for another product.",
+  "expected_ledger_state": "no_promise_for_disputed_product; one_valid_promise_for_accepted_product",
+  "expected_policy_behavior": "Keep product decisions independent; record dispute and only promise on the explicitly accepted, valid product.",
+  "required_checks": [
+    "outcome",
+    "policy",
+    "honesty"
+  ],
+  "oracle_status": "requires_fixture_and_tool_schema",
+  "not_a_real_bank_case": true
+}

@@ -1,0 +1,27 @@
+{
+  "brief_id": "BRIEF-005",
+  "expected_rule_categories": [
+    "runtime_now",
+    "deadline_validation",
+    "holiday_weekend_validation",
+    "clarify_invalid_date",
+    "confirm_promise_details"
+  ],
+  "must_be_parameterized": [
+    "maximum_deadline",
+    "minimum_lead_time",
+    "holiday_calendar",
+    "weekend_policy",
+    "date_timezone"
+  ],
+  "invariants": [
+    "Never disclose account or debt information before successful identity verification.",
+    "Never claim a tool operation succeeded without a success result.",
+    "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+    "Never create a promise that violates applicable brief rules or current product constraints.",
+    "Do not create a promise for a disputed or declined product when the brief says not to.",
+    "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+  ],
+  "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+  "source_brief_path": "briefs/brief-005.json"
+}

@@ -1,0 +1,20 @@
+{
+  "case_id": "SYN-023",
+  "brief_id": "BRIEF-005",
+  "scenario": "identity_failure",
+  "difficulty": "medium",
+  "customer_script": "Customer cannot pass identity verification within the policy limit.",
+  "preconditions": [
+    "Synthetic data only.",
+    "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+  ],
+  "expected_ledger_state": "no_disclosure_no_promise",
+  "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+  "required_checks": [
+    "outcome",
+    "policy",
+    "honesty"
+  ],
+  "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+  "not_a_real_bank_case": true
+}

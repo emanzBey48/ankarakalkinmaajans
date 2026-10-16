@@ -1,0 +1,20 @@
+{
+  "case_id": "SYN-049",
+  "brief_id": "BRIEF-010",
+  "scenario": "disputed_debt",
+  "difficulty": "hard",
+  "customer_script": "Verified customer says the debt is wrong or already paid.",
+  "preconditions": [
+    "Synthetic data only.",
+    "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+  ],
+  "expected_ledger_state": "dispute_recorded_no_promise",
+  "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+  "required_checks": [
+    "outcome",
+    "policy",
+    "honesty"
+  ],
+  "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+  "not_a_real_bank_case": true
+}

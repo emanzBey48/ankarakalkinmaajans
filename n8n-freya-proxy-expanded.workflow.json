@@ -1,0 +1,141 @@
+{
+  "name": "Freya API Gateway - validated flow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "freya/:service",
+        "responseMode": "usingRespondToWebhook",
+        "options": {}
+      },
+      "id": "a4ddfead-16b2-4a53-b471-111111111111",
+      "name": "1 - Freya çağrısını al",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [200, 300],
+      "webhookId": "a4ddfead-16b2-4a53-b471-222222222222",
+      "notesInFlow": true,
+      "notes": "Freya agent bu POST adresine bir araç çağrısı gönderir. URL içindeki :service bölümü hangi banka işleminin istendiğini belirtir. İstek gövdesinde Freya'nın oluşturduğu data/call alanları bulunur."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const routes = {\n  'cards.list': '/voice/v1/cards.list',\n  'cards.balance': '/voice/v1/cards.balance',\n  'statement.week.get': '/voice/v1/statement.week.get',\n  'statement.week.decide': '/voice/v1/statement.week.decide',\n  'statement.week.change': '/voice/v1/statement.week.change',\n  'contact.email.get': '/voice/v1/contact.email.get',\n  'statement.pdf.send': '/voice/v1/statement.pdf.send',\n};\n\nconst service = $json.params?.service;\nconst body = $json.body;\nconst supported = Object.prototype.hasOwnProperty.call(routes, service);\nconst hasData = body && typeof body === 'object' && body.data && typeof body.data === 'object';\nconst isValid = supported && hasData;\n\nreturn {\n  json: {\n    service,\n    isValid,\n    targetUrl: isValid ? `https://freya-bank-statement-mock.genctrader48.workers.dev${routes[service]}` : '',\n    body,\n    errorBody: { error: 'invalid_request', message: supported ? 'Request must contain a data object.' : `Unsupported service: ${String(service ?? '')}` },\n  },\n};"
+      },
+      "id": "b5ee0faf-27c3-4b64-a582-333333333333",
+      "name": "2 - Servisi ve istek gövdesini doğrula",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300],
+      "notesInFlow": true,
+      "notes": "İzin verilen yedi Freya servisini kontrol eder. Sadece bilinen servis adları ve içinde data nesnesi bulunan istekler ilerler. Servis yolu sabit bir izin listesinden seçildiği için rastgele URL'lere yönlendirme yapılmaz."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "d7aa21c5-0f13-4b42-b964-666666666666",
+              "leftValue": "={{ $json.isValid }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c6ff10b0-38d4-4c75-b693-444444444444",
+      "name": "3 - İstek geçerli mi?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [700, 300],
+      "notesInFlow": true,
+      "notes": "Evet kolu banka mock API'sine gider. Hayır kolu açıklayıcı bir 400 yanıtı üretir ve dış servisi çağırmaz."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.targetUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Accept", "value": "application/json" },
+            { "name": "Authorization", "value": "Bearer synthetic-test-token" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "e7a121c1-49e5-4d86-c8a4-777777777777",
+      "name": "4 - Banka mock API'sine ilet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 200],
+      "notesInFlow": true,
+      "notes": "Freya'dan gelen gövdeyi mevcut sentetik Cloudflare API'sine POST eder. Başarılı yanıtları ve banka servisinin hata durum kodlarını da yanıt gövdesiyle birlikte alır."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.body }}",
+        "options": { "responseCode": "={{ $json.statusCode || 200 }}" }
+      },
+      "id": "f8b232d2-5a06-4e97-d9b5-888888888888",
+      "name": "5 - Banka yanıtını Freya'ya döndür",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [1250, 200],
+      "notesInFlow": true,
+      "notes": "Banka servisinin JSON yanıtını ve HTTP durum kodunu Freya'ya geri iletir. Böylece agent, tool sonucuna göre müşteriye yanıt verebilir."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.errorBody }}",
+        "options": { "responseCode": 400 }
+      },
+      "id": "09c343e3-6b17-4fa8-eac6-999999999999",
+      "name": "Hata - geçersiz isteği bildir",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [980, 420],
+      "notesInFlow": true,
+      "notes": "Bilinmeyen bir servis veya data alanı eksikse 400 Bad Request döndürür. Bu dalda banka mock API'si çağrılmaz."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "1 - Freya çağrısını al": {
+      "main": [[{ "node": "2 - Servisi ve istek gövdesini doğrula", "type": "main", "index": 0 }]]
+    },
+    "2 - Servisi ve istek gövdesini doğrula": {
+      "main": [[{ "node": "3 - İstek geçerli mi?", "type": "main", "index": 0 }]]
+    },
+    "3 - İstek geçerli mi?": {
+      "main": [
+        [{ "node": "4 - Banka mock API'sine ilet", "type": "main", "index": 0 }],
+        [{ "node": "Hata - geçersiz isteği bildir", "type": "main", "index": 0 }]
+      ]
+    },
+    "4 - Banka mock API'sine ilet": {
+      "main": [[{ "node": "5 - Banka yanıtını Freya'ya döndür", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "d7aa21c5-0f13-4b42-b964-555555555555",
+  "meta": { "templateCredsSetupCompleted": true },
+  "tags": []
+}

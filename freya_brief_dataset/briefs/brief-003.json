@@ -1,0 +1,19 @@
+{
+  "id": "BRIEF-003",
+  "title": "Cedar Bank — Dispute-first handling",
+  "difficulty": "medium",
+  "split": "train",
+  "brief_text": "Verify identity before discussing account details. If the customer says the debt is already paid, incorrect, or disputed, do not negotiate a payment promise. Record the customer's statement using the permitted note tool and follow the dispute process. Do not represent the debt as confirmed unless account information supports that statement. If the customer later withdraws the dispute, follow the brief's explicit re-entry rules rather than assuming negotiation may resume.",
+  "policy_intents": [
+    "identity_before_disclosure",
+    "dispute_no_promise",
+    "note_tool",
+    "avoid_unverified_claims",
+    "explicit_reentry"
+  ],
+  "variable_policy_fields": [
+    "dispute_categories",
+    "note_schema",
+    "reentry_rules"
+  ]
+}

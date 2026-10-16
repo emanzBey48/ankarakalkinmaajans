@@ -1,0 +1,1269 @@
+{
+  "dataset_version": "1.0.0",
+  "cases": [
+    {
+      "case_id": "SYN-001",
+      "brief_id": "BRIEF-001",
+      "scenario": "verified_full_payment",
+      "difficulty": "easy",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-002",
+      "brief_id": "BRIEF-001",
+      "scenario": "third_party_answer",
+      "difficulty": "easy",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-003",
+      "brief_id": "BRIEF-001",
+      "scenario": "identity_failure",
+      "difficulty": "easy",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-004",
+      "brief_id": "BRIEF-001",
+      "scenario": "disputed_debt",
+      "difficulty": "easy",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-005",
+      "brief_id": "BRIEF-001",
+      "scenario": "tool_failure",
+      "difficulty": "easy",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-006",
+      "brief_id": "BRIEF-002",
+      "scenario": "verified_full_payment",
+      "difficulty": "easy",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-007",
+      "brief_id": "BRIEF-002",
+      "scenario": "third_party_answer",
+      "difficulty": "easy",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-008",
+      "brief_id": "BRIEF-002",
+      "scenario": "identity_failure",
+      "difficulty": "easy",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-009",
+      "brief_id": "BRIEF-002",
+      "scenario": "disputed_debt",
+      "difficulty": "easy",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-010",
+      "brief_id": "BRIEF-002",
+      "scenario": "tool_failure",
+      "difficulty": "easy",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-011",
+      "brief_id": "BRIEF-003",
+      "scenario": "verified_full_payment",
+      "difficulty": "medium",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-012",
+      "brief_id": "BRIEF-003",
+      "scenario": "third_party_answer",
+      "difficulty": "medium",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-013",
+      "brief_id": "BRIEF-003",
+      "scenario": "identity_failure",
+      "difficulty": "medium",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-014",
+      "brief_id": "BRIEF-003",
+      "scenario": "disputed_debt",
+      "difficulty": "medium",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-015",
+      "brief_id": "BRIEF-003",
+      "scenario": "tool_failure",
+      "difficulty": "medium",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-016",
+      "brief_id": "BRIEF-004",
+      "scenario": "verified_full_payment",
+      "difficulty": "medium",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-017",
+      "brief_id": "BRIEF-004",
+      "scenario": "third_party_answer",
+      "difficulty": "medium",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-018",
+      "brief_id": "BRIEF-004",
+      "scenario": "identity_failure",
+      "difficulty": "medium",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-019",
+      "brief_id": "BRIEF-004",
+      "scenario": "disputed_debt",
+      "difficulty": "medium",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-020",
+      "brief_id": "BRIEF-004",
+      "scenario": "tool_failure",
+      "difficulty": "medium",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-021",
+      "brief_id": "BRIEF-005",
+      "scenario": "verified_full_payment",
+      "difficulty": "medium",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-022",
+      "brief_id": "BRIEF-005",
+      "scenario": "third_party_answer",
+      "difficulty": "medium",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-023",
+      "brief_id": "BRIEF-005",
+      "scenario": "identity_failure",
+      "difficulty": "medium",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-024",
+      "brief_id": "BRIEF-005",
+      "scenario": "disputed_debt",
+      "difficulty": "medium",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-025",
+      "brief_id": "BRIEF-005",
+      "scenario": "invalid_or_conflicting_date",
+      "difficulty": "medium",
+      "customer_script": "Customer proposes a date that violates a policy deadline or calendar restriction.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_promise_for_invalid_date",
+      "expected_policy_behavior": "Validate against runtime now and applicable product-specific deadline/calendar; ask for a valid alternative.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-026",
+      "brief_id": "BRIEF-006",
+      "scenario": "verified_full_payment",
+      "difficulty": "medium",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-027",
+      "brief_id": "BRIEF-006",
+      "scenario": "third_party_answer",
+      "difficulty": "medium",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-028",
+      "brief_id": "BRIEF-006",
+      "scenario": "identity_failure",
+      "difficulty": "medium",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-029",
+      "brief_id": "BRIEF-006",
+      "scenario": "disputed_debt",
+      "difficulty": "medium",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-030",
+      "brief_id": "BRIEF-006",
+      "scenario": "tool_failure",
+      "difficulty": "medium",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-031",
+      "brief_id": "BRIEF-007",
+      "scenario": "verified_full_payment",
+      "difficulty": "hard",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-032",
+      "brief_id": "BRIEF-007",
+      "scenario": "third_party_answer",
+      "difficulty": "hard",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-033",
+      "brief_id": "BRIEF-007",
+      "scenario": "identity_failure",
+      "difficulty": "hard",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-034",
+      "brief_id": "BRIEF-007",
+      "scenario": "disputed_debt",
+      "difficulty": "hard",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-035",
+      "brief_id": "BRIEF-007",
+      "scenario": "tool_failure",
+      "difficulty": "hard",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-036",
+      "brief_id": "BRIEF-008",
+      "scenario": "verified_full_payment",
+      "difficulty": "medium",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-037",
+      "brief_id": "BRIEF-008",
+      "scenario": "third_party_answer",
+      "difficulty": "medium",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-038",
+      "brief_id": "BRIEF-008",
+      "scenario": "identity_failure",
+      "difficulty": "medium",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-039",
+      "brief_id": "BRIEF-008",
+      "scenario": "disputed_debt",
+      "difficulty": "medium",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-040",
+      "brief_id": "BRIEF-008",
+      "scenario": "tool_failure",
+      "difficulty": "medium",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-041",
+      "brief_id": "BRIEF-009",
+      "scenario": "multi_product_partial_or_full_acceptance",
+      "difficulty": "hard",
+      "customer_script": "Customer has multiple products and explicitly accepts only the stated product(s), declining the others.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promises_only_for_explicitly_accepted_valid_products",
+      "expected_policy_behavior": "Iterate products independently; validate each product's amount/date; create promises only for accepted products.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-042",
+      "brief_id": "BRIEF-009",
+      "scenario": "third_party_answer",
+      "difficulty": "hard",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-043",
+      "brief_id": "BRIEF-009",
+      "scenario": "identity_failure",
+      "difficulty": "hard",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-044",
+      "brief_id": "BRIEF-009",
+      "scenario": "disputed_debt",
+      "difficulty": "hard",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-045",
+      "brief_id": "BRIEF-009",
+      "scenario": "tool_failure",
+      "difficulty": "hard",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-046",
+      "brief_id": "BRIEF-010",
+      "scenario": "multi_product_partial_or_full_acceptance",
+      "difficulty": "hard",
+      "customer_script": "Customer has multiple products and explicitly accepts only the stated product(s), declining the others.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promises_only_for_explicitly_accepted_valid_products",
+      "expected_policy_behavior": "Iterate products independently; validate each product's amount/date; create promises only for accepted products.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-047",
+      "brief_id": "BRIEF-010",
+      "scenario": "third_party_answer",
+      "difficulty": "hard",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-048",
+      "brief_id": "BRIEF-010",
+      "scenario": "identity_failure",
+      "difficulty": "hard",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-049",
+      "brief_id": "BRIEF-010",
+      "scenario": "disputed_debt",
+      "difficulty": "hard",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-050",
+      "brief_id": "BRIEF-010",
+      "scenario": "invalid_or_conflicting_date",
+      "difficulty": "hard",
+      "customer_script": "Customer proposes a date that violates a policy deadline or calendar restriction.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_promise_for_invalid_date",
+      "expected_policy_behavior": "Validate against runtime now and applicable product-specific deadline/calendar; ask for a valid alternative.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-051",
+      "brief_id": "BRIEF-011",
+      "scenario": "verified_full_payment",
+      "difficulty": "medium",
+      "customer_script": "Customer verifies identity and accepts a valid full-balance payment option.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promise_recorded_once",
+      "expected_policy_behavior": "Verify identity; retrieve account; validate amount/date; confirm exact details; create promise; report success only on confirmed tool success.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-052",
+      "brief_id": "BRIEF-011",
+      "scenario": "third_party_answer",
+      "difficulty": "medium",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-053",
+      "brief_id": "BRIEF-011",
+      "scenario": "identity_failure",
+      "difficulty": "medium",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-054",
+      "brief_id": "BRIEF-011",
+      "scenario": "disputed_debt",
+      "difficulty": "medium",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-055",
+      "brief_id": "BRIEF-011",
+      "scenario": "tool_failure",
+      "difficulty": "medium",
+      "customer_script": "The promise creation tool fails for the initial attempt.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_false_success_claim",
+      "expected_policy_behavior": "Follow policy retry/recovery limits; ledger must not show a failed promise; agent must not claim it was recorded.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-056",
+      "brief_id": "BRIEF-012",
+      "scenario": "multi_product_partial_or_full_acceptance",
+      "difficulty": "hard",
+      "customer_script": "Customer has multiple products and explicitly accepts only the stated product(s), declining the others.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "promises_only_for_explicitly_accepted_valid_products",
+      "expected_policy_behavior": "Iterate products independently; validate each product's amount/date; create promises only for accepted products.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-057",
+      "brief_id": "BRIEF-012",
+      "scenario": "third_party_answer",
+      "difficulty": "hard",
+      "customer_script": "A relative or other third party answers the call.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-058",
+      "brief_id": "BRIEF-012",
+      "scenario": "identity_failure",
+      "difficulty": "hard",
+      "customer_script": "Customer cannot pass identity verification within the policy limit.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_disclosure_no_promise",
+      "expected_policy_behavior": "Stop at the permitted attempt limit; do not retrieve or disclose debt details; follow safe termination.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-059",
+      "brief_id": "BRIEF-012",
+      "scenario": "disputed_debt",
+      "difficulty": "hard",
+      "customer_script": "Verified customer says the debt is wrong or already paid.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "dispute_recorded_no_promise",
+      "expected_policy_behavior": "Use dispute/note path as specified; no payment promise for the disputed product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "SYN-060",
+      "brief_id": "BRIEF-012",
+      "scenario": "invalid_or_conflicting_date",
+      "difficulty": "hard",
+      "customer_script": "Customer proposes a date that violates a policy deadline or calendar restriction.",
+      "preconditions": [
+        "Synthetic data only.",
+        "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+      ],
+      "expected_ledger_state": "no_promise_for_invalid_date",
+      "expected_policy_behavior": "Validate against runtime now and applicable product-specific deadline/calendar; ask for a valid alternative.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "EDGE-061",
+      "brief_id": "BRIEF-008",
+      "scenario": "callback_schedule_failure",
+      "difficulty": "medium",
+      "customer_script": "Third party answers; callback is allowed, but scheduling tool fails.",
+      "expected_ledger_state": "no_debt_disclosure; no_callback_recorded_if_tool_failed",
+      "expected_policy_behavior": "Do not disclose financial information; do not claim callback was scheduled without success result.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "requires_fixture_and_tool_schema",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "EDGE-062",
+      "brief_id": "BRIEF-011",
+      "scenario": "split_number_then_correction",
+      "difficulty": "hard",
+      "customer_script": "Customer gives an amount in parts, then corrects the earlier amount.",
+      "expected_ledger_state": "at_most_one_promise_for_latest_explicitly_confirmed_valid_amount",
+      "expected_policy_behavior": "Resolve the correction, read back the full amount, clarify if ambiguous, and validate before recording.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "requires_fixture_and_tool_schema",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "EDGE-063",
+      "brief_id": "BRIEF-009",
+      "scenario": "one_product_disputed_other_accepted",
+      "difficulty": "hard",
+      "customer_script": "Customer disputes one product but explicitly accepts a valid promise for another product.",
+      "expected_ledger_state": "no_promise_for_disputed_product; one_valid_promise_for_accepted_product",
+      "expected_policy_behavior": "Keep product decisions independent; record dispute and only promise on the explicitly accepted, valid product.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "requires_fixture_and_tool_schema",
+      "not_a_real_bank_case": true
+    },
+    {
+      "case_id": "EDGE-064",
+      "brief_id": "BRIEF-013",
+      "scenario": "conflicting_policy_documents",
+      "difficulty": "hard",
+      "customer_script": "Two source documents appear to conflict on a payment rule and have different effective dates.",
+      "expected_ledger_state": "no_invalid_promise; unresolved_conflict_escalated_or_clarified",
+      "expected_policy_behavior": "Apply documented source precedence and effective dates; flag unresolved conflicts rather than inventing a policy.",
+      "required_checks": [
+        "outcome",
+        "policy",
+        "honesty"
+      ],
+      "oracle_status": "requires_fixture_and_tool_schema",
+      "not_a_real_bank_case": true
+    }
+  ]
+}

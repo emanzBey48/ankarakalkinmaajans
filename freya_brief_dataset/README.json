@@ -1,0 +1,16 @@
+{
+  "title": "Freya Synthetic Brief Dataset",
+  "how_to_use": [
+    "Use briefs/*.json as synthetic input briefs for the builder.",
+    "Use expected_rules/*.json as semantic extraction expectations for tests, not as runtime data supplied to the builder.",
+    "Use test_cases/*.json or test_cases.json as scenario templates; supply concrete fixture values and bind to the official mock bank API.",
+    "Use dataset_manifest.json for splits and provenance.",
+    "Use test_strategy.json to stage testing from unit tests to official benchmark."
+  ],
+  "important": [
+    "This is an original synthetic dataset, not the official hackathon kit.",
+    "Do not hardcode sample names, case IDs, dates, amounts, or policy values in builder code.",
+    "The tool names are listed for orientation; request/response fields must come from tools/openapi.json.",
+    "The test case templates are semantic oracles and are not directly executable until fixtures and the harness are connected."
+  ]
+}

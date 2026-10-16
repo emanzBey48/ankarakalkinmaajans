@@ -1,0 +1,19 @@
+{
+  "id": "BRIEF-011",
+  "title": "Redwood Bank — Amount correction and confirmation",
+  "difficulty": "medium",
+  "split": "validation",
+  "brief_text": "The customer may state a payment amount in multiple parts or correct an earlier amount. Treat the latest clearly confirmed amount as the candidate, but read back the full amount before creating a promise. If the amount remains ambiguous, ask a clarification question. Validate the amount against the current product rules and do not create a promise based on a guessed or partially heard amount.",
+  "policy_intents": [
+    "number_resolution",
+    "latest_correction",
+    "clarify_ambiguity",
+    "amount_validation",
+    "explicit_confirmation"
+  ],
+  "variable_policy_fields": [
+    "minimum_payment_amount",
+    "amount_rounding_rules",
+    "currency_format"
+  ]
+}

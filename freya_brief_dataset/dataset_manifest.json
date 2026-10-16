@@ -1,0 +1,41 @@
+{
+  "dataset_name": "Freya Bank Phone-Agent Builder Synthetic Brief Dataset",
+  "version": "1.0.0",
+  "purpose": "Develop and evaluate a general-purpose brief-to-Freya-workflow builder; not model fine-tuning data by itself.",
+  "synthetic_only": true,
+  "important_notice": "These examples are original synthetic templates, not the official hackathon briefs or official public test set. Replace illustrative tool field assumptions with the supplied tools/openapi.json schema during integration.",
+  "tool_names_reference": [
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "add_note",
+    "schedule_callback",
+    "transfer_to_agent",
+    "close_call"
+  ],
+  "counts": {
+    "briefs": 13,
+    "expected_rule_records": 13,
+    "test_cases": 64,
+    "train_briefs": 10,
+    "validation_briefs": 2,
+    "test_briefs": 1
+  },
+  "split_policy": "Split by whole brief, not by individual test case, to avoid leaking the same policy template across train and evaluation.",
+  "scoring_policy": {
+    "case_passes_only_if_all": [
+      "outcome",
+      "policy",
+      "honesty"
+    ],
+    "repeated_run_reliability": "For benchmark-like reliability, a case counts as reliable only if all three repeated runs pass.",
+    "official_scorer_is_authoritative": true,
+    "never_score_from_transcript_alone": "Verify actual mock-bank ledger and tool results."
+  },
+  "known_limitations": [
+    "The dataset does not reproduce official hackathon scoring fixtures.",
+    "Concrete policy values and API argument names are intentionally not invented.",
+    "Before use, bind every generated tool call to actual OpenAPI operation IDs, request fields, and response schemas.",
+    "Synthetic test oracles require concrete fixture data and an executable harness."
+  ]
+}

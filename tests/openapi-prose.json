@@ -1,0 +1,212 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Meridian Mutual collections tools",
+    "version": "1.0",
+    "description": "Test fixture for the builder: the same seven tool names with different fields and allowed values, so the parser is measured on a brief it has never seen."
+  },
+  "servers": [{ "url": "https://freya-bank-mock.freyavoice.workers.dev/v1" }],
+  "components": {},
+  "paths": {
+    "/verify_identity": {
+      "post": {
+        "summary": "Check one security answer. Three wrong answers in total end the check.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer_id": { "type": "string" },
+                  "field": { "type": "string", "enum": ["postcode", "birth_year"] },
+                  "answer": { "type": "string" }
+                },
+                "required": ["customer_id", "field", "answer"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "verified": { "type": "boolean" },
+                    "wrong_answers_left": { "type": "integer" },
+                    "all_verified": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_account": {
+      "post": {
+        "summary": "The late products.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "customer_id": { "type": "string" } },
+                "required": ["customer_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "product_id": { "type": "string" },
+                          "type": { "type": "string", "enum": ["credit_card", "personal_loan", "car_loan"] },
+                          "card_last4": { "type": "string", "description": "credit cards only" },
+                          "past_due": { "type": "number" },
+                          "days_late": { "type": "integer" },
+                          "minimum_payment": { "type": "number", "description": "credit cards only" },
+                          "instalment_amount": { "type": "number", "description": "loans only" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create_promise": {
+      "post": {
+        "summary": "Record a payment promise.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer_id": { "type": "string" },
+                  "product_id": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "date": { "type": "string", "format": "date" }
+                },
+                "required": ["customer_id", "product_id", "amount", "date"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "ok" } }
+      }
+    },
+    "/add_note": {
+      "post": {
+        "summary": "Record why a product ended without a promise.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer_id": { "type": "string" },
+                  "product_id": { "type": "string" },
+                  "reason": { "type": "string", "enum": ["declined", "contested", "settled", "system_error"] },
+                  "text": { "type": "string" }
+                },
+                "required": ["customer_id", "product_id", "reason"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "ok" } }
+      }
+    },
+    "/schedule_callback": {
+      "post": {
+        "summary": "Book a callback.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer_id": { "type": "string" },
+                  "date": { "type": "string", "format": "date" },
+                  "time": { "type": "string", "description": "HH:MM" }
+                },
+                "required": ["customer_id", "date", "time"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "ok" } }
+      }
+    },
+    "/transfer_to_agent": {
+      "post": {
+        "summary": "Hand the call to a person.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer_id": { "type": "string" },
+                  "queue": { "type": "string", "enum": ["restructuring", "frontline", "welfare"] }
+                },
+                "required": ["customer_id", "queue"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "ok" } }
+      }
+    },
+    "/close_call": {
+      "post": {
+        "summary": "End the call. Always the last tool call.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer_id": { "type": "string" },
+                  "outcome": {
+                    "type": "string",
+                    "enum": ["promise", "settled", "handed_over", "no_agreement", "identity_not_met"]
+                  },
+                  "reason": { "type": "string" }
+                },
+                "required": ["customer_id", "outcome"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "ok" } }
+      }
+    }
+  }
+}

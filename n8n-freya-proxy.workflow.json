@@ -1,0 +1,77 @@
+{
+  "name": "Freya tool API proxy",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "freya/:service",
+        "responseMode": "usingRespondToWebhook",
+        "options": {}
+      },
+      "id": "a4ddfead-16b2-4a53-b471-111111111111",
+      "name": "Freya webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [240, 300],
+      "webhookId": "a4ddfead-16b2-4a53-b471-222222222222"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://freya-bank-statement-mock.genctrader48.workers.dev/voice/v1/' + $json.params.service }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Accept", "value": "application/json" },
+            { "name": "Authorization", "value": "Bearer synthetic-test-token" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "b5ee0faf-27c3-4b64-a582-333333333333",
+      "name": "Forward to bank mock",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.body }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode || 200 }}"
+        }
+      },
+      "id": "c6ff10b0-38d4-4c75-b693-444444444444",
+      "name": "Return bank response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [760, 300]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Freya webhook": {
+      "main": [[{ "node": "Forward to bank mock", "type": "main", "index": 0 }]]
+    },
+    "Forward to bank mock": {
+      "main": [[{ "node": "Return bank response", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "d7aa21c5-0f13-4b42-b964-555555555555",
+  "meta": { "templateCredsSetupCompleted": true },
+  "tags": []
+}

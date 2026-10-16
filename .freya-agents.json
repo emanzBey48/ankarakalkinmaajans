@@ -1,0 +1,17 @@
+{
+ "brief-a": {
+  "workflow_id": "5fc2d44d-08d1-4b07-a529-9aa1f2370cb7",
+  "agent_id": "dc243876-9f25-45fe-84b5-9aa5b395531b",
+  "version": 31
+ },
+ "brief-b": {
+  "workflow_id": "b2e71ee0-55b0-4007-b2b3-6cd4b7c1917a",
+  "agent_id": "70c9a5b2-d541-4540-a8e8-941b87cce2d1",
+  "version": 16
+ },
+ "final-case-statement-debt": {
+  "workflow_id": "7d820f72-bf66-4d60-8571-c78fa8df1c23",
+  "agent_id": "0e134dcb-bb76-4ce2-a153-a524700a1e0a",
+  "version": 8
+ }
+}

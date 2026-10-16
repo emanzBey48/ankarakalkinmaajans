@@ -1,0 +1,16 @@
+{
+  "case_id": "EDGE-062",
+  "brief_id": "BRIEF-011",
+  "scenario": "split_number_then_correction",
+  "difficulty": "hard",
+  "customer_script": "Customer gives an amount in parts, then corrects the earlier amount.",
+  "expected_ledger_state": "at_most_one_promise_for_latest_explicitly_confirmed_valid_amount",
+  "expected_policy_behavior": "Resolve the correction, read back the full amount, clarify if ambiguous, and validate before recording.",
+  "required_checks": [
+    "outcome",
+    "policy",
+    "honesty"
+  ],
+  "oracle_status": "requires_fixture_and_tool_schema",
+  "not_a_real_bank_case": true
+}

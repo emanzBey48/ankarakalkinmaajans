@@ -1,0 +1,18 @@
+{
+  "id": "BRIEF-010",
+  "title": "Juniper Finance — Shared date with different deadlines",
+  "difficulty": "hard",
+  "split": "train",
+  "brief_text": "For customers with multiple products, validate the proposed payment date separately against each product's policy. A date valid for one product may be invalid for another. If the customer requests one date for all products, explain which products can use that date and ask how to proceed for the others. Never silently change the customer's requested date or create a promise for a product with an invalid date.",
+  "policy_intents": [
+    "multi_product_iteration",
+    "per_product_deadline",
+    "clarify_partial_date_validity",
+    "no_silent_date_change"
+  ],
+  "variable_policy_fields": [
+    "product_deadlines",
+    "calendar_restrictions",
+    "date_limits"
+  ]
+}

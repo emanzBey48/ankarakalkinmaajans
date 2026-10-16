@@ -1,0 +1,468 @@
+{
+  "generatedAt": "2026-10-15T20:47:14.926Z",
+  "model": "gemini-3.8-flash",
+  "note": "Bu koşu demo sunumu için bir kez gerçek Gemini API ile yapıldı ve loglandı. Site bu kayıtları okur, API tekrar çağırmaz.",
+  "calls": [
+    {
+      "id": "summary",
+      "title": "Proje özeti",
+      "purpose": "Sunum için Türkçe özet metni üret",
+      "model": "gemini-3.8-flash",
+      "provider": "Google Gemini API (generativelanguage.googleapis.com)",
+      "endpoint": "gemini-3.8-flash:generateContent",
+      "attempts": [
+        "gemini-3.8-flash#1:200"
+      ],
+      "startedAt": "2026-10-15T20:45:35.600Z",
+      "durationMs": 16810,
+      "usage": {
+        "promptTokenCount": 362,
+        "candidatesTokenCount": 59,
+        "totalTokenCount": 1858,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 362
+          }
+        ],
+        "thoughtsTokenCount": 1437,
+        "serviceTier": "standard"
+      },
+      "finishReason": "MAX_TOKENS",
+      "promptChars": 1164,
+      "prompt": "Eski bir okul projesini anlatacak kisa bir metin yaz. Ton: net, profesyonel, biraz özgüvenli.\n\nProje: Proje: \"Build the Builder\".\nGirdi: bir banka brief'i (Markdown + OpenAPI arac dosyasi).\nCikti: Freya platformunda calisan bir telefon ses agenti (workflow JSON).\nBuilder su asamalardan gecer:\n1) brief_parser.py  -> brief metnindeki kurallari, tablolari, sonuc adlarini cikarir\n2) openapi_parser.py -> arac (tool) semasini ve alanlarini okur\n3) policy_spec.py   -> kurallari PolicySpec nesnesine normalize eder\n4) date_calculator.py -> is gunleri, tatil, vade hesaplarini uretir\n5) workflow_builder.py -> node'lar, prompt'lar, transition'lar, code step'ler\n6) main.py           -> lokal yapısal kontrol + publish + pratik musteri testleri\nHer asamada CIKTI dosyaya yazilir ve build log'a eklenir.\n\nAyrıca: ajan \"kredi kartı ekstode borcu\" çağrılarını Türkçe yanıtlıyor, kimlik doğrulama, borç okuma, taksit/vade hesaplama, ödeme planı teklifi, e-posta ile beyan gönderme ve insan temsilcisine aktarma adımlarını içeriyor. Node sayısı 48, pratik müşteri sayısı 13.\n\nÇıktı: 3 kısa paragraf + 4 maddelik madde işaretli liste. Sadece Türkçe. Markdown başlık kullanma.",
+      "responseText": "\"Build the Builder\" projesi, ham bankacılık gereksinimlerini doğrudan çalışan bir yapay zekâ ses asistanına dönüştüren uçtan uca bir derleyici mimarisidir. Proje kapsamında, Markdown formatındaki banka iş kuralları ve OpenAPI araç ş",
+      "responseJson": null,
+      "parseError": null,
+      "ok": true
+    },
+    {
+      "id": "n8n-pipeline",
+      "title": "n8n iş akışı üretimi",
+      "purpose": "Builder pipeline’ını n8n JSON olarak tasarlat",
+      "model": "gemini-3.8-flash",
+      "provider": "Google Gemini API (generativelanguage.googleapis.com)",
+      "endpoint": "gemini-3.8-flash:generateContent",
+      "attempts": [
+        "gemini-3.8-flash#1:429",
+        "gemini-3.8-flash#2:200"
+      ],
+      "startedAt": "2026-10-15T20:47:14.933Z",
+      "durationMs": 42711,
+      "usage": {
+        "promptTokenCount": 611,
+        "candidatesTokenCount": 2170,
+        "totalTokenCount": 7054,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 611
+          }
+        ],
+        "thoughtsTokenCount": 4273,
+        "serviceTier": "standard"
+      },
+      "finishReason": "STOP",
+      "promptChars": 1831,
+      "prompt": "Sen bir n8n workflow uzmanısın. Aşağıdaki süreci n8n JSON export formatında, SADECE geçerli JSON olarak yaz.\n\nProje: \"Build the Builder\".\nGirdi: bir banka brief'i (Markdown + OpenAPI arac dosyasi).\nCikti: Freya platformunda calisan bir telefon ses agenti (workflow JSON).\nBuilder su asamalardan gecer:\n1) brief_parser.py  -> brief metnindeki kurallari, tablolari, sonuc adlarini cikarir\n2) openapi_parser.py -> arac (tool) semasini ve alanlarini okur\n3) policy_spec.py   -> kurallari PolicySpec nesnesine normalize eder\n4) date_calculator.py -> is gunleri, tatil, vade hesaplarini uretir\n5) workflow_builder.py -> node'lar, prompt'lar, transition'lar, code step'ler\n6) main.py           -> lokal yapısal kontrol + publish + pratik musteri testleri\nHer asamada CIKTI dosyaya yazilir ve build log'a eklenir.\n\nKurallar:\n- Cevabin ilk karakteri { ve son karakteri } olsun. Markdown yok, aciklama yok.\n- \"nodes\" her biri: name (benzersiz, Turkce karakter yok), type, typeVersion (sayi), position [x, y] (yatay, 260px aralikla), parameters (nesne).\n- Sadece su gercek n8n node tiplerini kullan: n8n-nodes-base.manualTrigger, n8n-nodes-base.scheduleTrigger, n8n-nodes-base.readWriteFile, n8n-nodes-base.code, n8n-nodes-base.httpRequest, n8n-nodes-base.if, n8n-nodes-base.switch, n8n-nodes-base.merge, n8n-nodes-base.stopAndError, n8n-nodes-base.noOp.\n- \"connections\" n8n formatinda olsun: { \"NodeName\": { \"main\": [ [ {\"node\": \"Hedef\", \"type\": \"main\", \"index\": 0} ] ] } }\n- Bir node'un parametreleri kisa ve gercekci olsun (dosya yolu, url, js kodu ozeti).\n- Toplam 9-12 node. Akis: tetikle -> brief oku -> arac semasi oku -> Gemini ile brief ozetle -> kod ile workflow JSON derle -> gecerlilik kontrolu (IF) -> hat varsa duzelt -> yayinla (HTTP) -> test kosulandir -> trace yaz -> bitir.\n- Ayni node'a iki kez gitme, cevrim (cycle) kurma.",
+      "responseText": "{\n  \"name\": \"Build the Builder - Freya Voice Agent Pipeline\",\n  \"nodes\": [\n    {\n      \"parameters\": {},\n      \"name\": \"ManualTrigger\",\n      \"type\": \"n8n-nodes-base.manualTrigger\",\n      \"typeVersion\": 1,\n      \"position\": [0, 300]\n    },\n    {\n      \"parameters\": {\n        \"operation\": \"read\",\n        \"filePath\": \"/workspace/briefs/bank_credit_brief.md\"\n      },\n      \"name\": \"ReadBriefFile\",\n      \"type\": \"n8n-nodes-base.readWriteFile\",\n      \"typeVersion\": 1,\n      \"position\": [260, 300]\n    },\n    {\n      \"parameters\": {\n        \"operation\": \"read\",\n        \"filePath\": \"/workspace/schemas/openapi_tools.json\"\n      },\n      \"name\": \"ReadOpenAPISchema\",\n      \"type\": \"n8n-nodes-base.readWriteFile\",\n      \"typeVersion\": 1,\n      \"position\": [520, 300]\n    },\n    {\n      \"parameters\": {\n        \"method\": \"POST\",\n        \"url\": \"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent\",\n        \"sendBody\": true,\n        \"specifyBody\": \"json\",\n        \"jsonBody\": \"={\\n  \\\"contents\\\": [{\\n    \\\"parts\\\": [{\\\"text\\\": \\\"Brief parsing: Extract rules, decision tables, and intents: \\\" + $json.data}]\\n  }]\\n}\"\n      },\n      \"name\": \"SummarizeBriefGemini\",\n      \"type\": \"n8n-nodes-base.httpRequest\",\n      \"typeVersion\": 4.2,\n      \"position\": [780, 300]\n    },\n    {\n      \"parameters\": {\n        \"language\": \"javaScript\",\n        \"jsCode\": \"const briefSummary = $items('SummarizeBriefGemini')[0].json;\\nconst toolSchema = $items('ReadOpenAPISchema')[0].json;\\n\\nconst agentWorkflow = {\\n  agent_name: 'FreyaBankVoiceAgent',\\n  version: '1.0.0',\\n  system_prompt: 'Bankacilik sesli asistanisin. Is gunleri ve tatil vadelerine gore hesaplama yaparsin.',\\n  tools: toolSchema.tools || [],\\n  nodes: [\\n    { id: 'greeting', type: 'voice_prompt', text: 'Hos geldiniz, size nasil yardimci olabilirim?' },\\n    { id: 'check_due_date', type: 'action_step', handler: 'date_calculator' },\\n    { id: 'handoff_agent', type: 'transfer', condition: 'transfer_requested' }\\n  ]\\n};\\n\\nconst isValid = Boolean(agentWorkflow.agent_name && agentWorkflow.nodes.length > 0);\\n\\nreturn [{ json: { workflowSpec: agentWorkflow, isValid } }];\"\n      },\n      \"name\": \"CompileWorkflowJSON\",\n      \"type\": \"n8n-nodes-base.code\",\n      \"typeVersion\": 2,\n      \"position\": [1040, 300]\n    },\n    {\n      \"parameters\": {\n        \"conditions\": {\n          \"boolean\": [\n            {\n              \"value1\": \"={{ $json.isValid }}\",\n              \"value2\": true\n            }\n          ]\n        }\n      },\n      \"name\": \"ValidateSpec\",\n      \"type\": \"n8n-nodes-base.if\",\n      \"typeVersion\": 2,\n      \"position\": [1300, 300]\n    },\n    {\n      \"parameters\": {\n        \"language\": \"javaScript\",\n        \"jsCode\": \"const spec = $json.workflowSpec || {};\\nspec.agent_name = spec.agent_name || 'FreyaBankVoiceAgent_Recovered';\\nspec.nodes = spec.nodes || [{ id: 'fallback', type: 'voice_prompt', text: 'Size nasil yardimci olabilirim?' }];\\nspec.fixed = true;\\nreturn [{ json: { workflowSpec: spec, isValid: true } }];\"\n      },\n      \"name\": \"AutoFixSpec\",\n      \"type\": \"n8n-nodes-base.code\",\n      \"typeVersion\": 2,\n      \"position\": [1560, 450]\n    },\n    {\n      \"parameters\": {\n        \"method\": \"POST\",\n        \"url\": \"https://api.freya.ai/v1/agents/publish\",\n        \"sendBody\": true,\n        \"specifyBody\": \"json\",\n        \"jsonBody\": \"={{ JSON.stringify($json.workflowSpec) }}\"\n      },\n      \"name\": \"PublishFreyaAgent\",\n      \"type\": \"n8n-nodes-base.httpRequest\",\n      \"typeVersion\": 4.2,\n      \"position\": [1820, 300]\n    },\n    {\n      \"parameters\": {\n        \"method\": \"POST\",\n        \"url\": \"https://api.freya.ai/v1/agents/test-suite\",\n        \"sendBody\": true,\n        \"specifyBody\": \"json\",\n        \"jsonBody\": \"={\\n  \\\"agent_id\\\": $json.agent_id || 'FreyaBankVoiceAgent',\\n  \\\"scenario\\\": \\\"tatil_gunu_vade_hesabi_ve_bilgilendirme\\\"\\n}\"\n      },\n      \"name\": \"ExecutePracticalTests\",\n      \"type\": \"n8n-nodes-base.httpRequest\",\n      \"typeVersion\": 4.2,\n      \"position\": [2080, 300]\n    },\n    {\n      \"parameters\": {\n        \"operation\": \"write\",\n        \"filePath\": \"/workspace/logs/build_and_test_log.json\",\n        \"fileContent\": \"={{ JSON.stringify($json) }}\"\n      },\n      \"name\": \"WriteTraceLog\",\n      \"type\": \"n8n-nodes-base.readWriteFile\",\n      \"typeVersion\": 1,\n      \"position\": [2340, 300]\n    },\n    {\n      \"parameters\": {},\n      \"name\": \"Finish\",\n      \"type\": \"n8n-nodes-base.noOp\",\n      \"typeVersion\": 1,\n      \"position\": [2600, 300]\n    }\n  ],\n  \"connections\": {\n    \"ManualTrigger\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"ReadBriefFile\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"ReadBriefFile\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"ReadOpenAPISchema\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"ReadOpenAPISchema\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"SummarizeBriefGemini\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"SummarizeBriefGemini\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"CompileWorkflowJSON\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"CompileWorkflowJSON\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"ValidateSpec\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"ValidateSpec\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"PublishFreyaAgent\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ],\n        [\n          {\n            \"node\": \"AutoFixSpec\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"AutoFixSpec\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"PublishFreyaAgent\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"PublishFreyaAgent\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"ExecutePracticalTests\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"ExecutePracticalTests\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"WriteTraceLog\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"WriteTraceLog\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"Finish\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    }\n  }\n}",
+      "responseJson": {
+        "name": "Build the Builder - Freya Voice Agent Pipeline",
+        "nodes": [
+          {
+            "parameters": {},
+            "name": "ManualTrigger",
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+              0,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "operation": "read",
+              "filePath": "/workspace/briefs/bank_credit_brief.md"
+            },
+            "name": "ReadBriefFile",
+            "type": "n8n-nodes-base.readWriteFile",
+            "typeVersion": 1,
+            "position": [
+              260,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "operation": "read",
+              "filePath": "/workspace/schemas/openapi_tools.json"
+            },
+            "name": "ReadOpenAPISchema",
+            "type": "n8n-nodes-base.readWriteFile",
+            "typeVersion": 1,
+            "position": [
+              520,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "method": "POST",
+              "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+              "sendBody": true,
+              "specifyBody": "json",
+              "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\"text\": \"Brief parsing: Extract rules, decision tables, and intents: \" + $json.data}]\n  }]\n}"
+            },
+            "name": "SummarizeBriefGemini",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+              780,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "language": "javaScript",
+              "jsCode": "const briefSummary = $items('SummarizeBriefGemini')[0].json;\nconst toolSchema = $items('ReadOpenAPISchema')[0].json;\n\nconst agentWorkflow = {\n  agent_name: 'FreyaBankVoiceAgent',\n  version: '1.0.0',\n  system_prompt: 'Bankacilik sesli asistanisin. Is gunleri ve tatil vadelerine gore hesaplama yaparsin.',\n  tools: toolSchema.tools || [],\n  nodes: [\n    { id: 'greeting', type: 'voice_prompt', text: 'Hos geldiniz, size nasil yardimci olabilirim?' },\n    { id: 'check_due_date', type: 'action_step', handler: 'date_calculator' },\n    { id: 'handoff_agent', type: 'transfer', condition: 'transfer_requested' }\n  ]\n};\n\nconst isValid = Boolean(agentWorkflow.agent_name && agentWorkflow.nodes.length > 0);\n\nreturn [{ json: { workflowSpec: agentWorkflow, isValid } }];"
+            },
+            "name": "CompileWorkflowJSON",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+              1040,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "conditions": {
+                "boolean": [
+                  {
+                    "value1": "={{ $json.isValid }}",
+                    "value2": true
+                  }
+                ]
+              }
+            },
+            "name": "ValidateSpec",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2,
+            "position": [
+              1300,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "language": "javaScript",
+              "jsCode": "const spec = $json.workflowSpec || {};\nspec.agent_name = spec.agent_name || 'FreyaBankVoiceAgent_Recovered';\nspec.nodes = spec.nodes || [{ id: 'fallback', type: 'voice_prompt', text: 'Size nasil yardimci olabilirim?' }];\nspec.fixed = true;\nreturn [{ json: { workflowSpec: spec, isValid: true } }];"
+            },
+            "name": "AutoFixSpec",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+              1560,
+              450
+            ]
+          },
+          {
+            "parameters": {
+              "method": "POST",
+              "url": "https://api.freya.ai/v1/agents/publish",
+              "sendBody": true,
+              "specifyBody": "json",
+              "jsonBody": "={{ JSON.stringify($json.workflowSpec) }}"
+            },
+            "name": "PublishFreyaAgent",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+              1820,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "method": "POST",
+              "url": "https://api.freya.ai/v1/agents/test-suite",
+              "sendBody": true,
+              "specifyBody": "json",
+              "jsonBody": "={\n  \"agent_id\": $json.agent_id || 'FreyaBankVoiceAgent',\n  \"scenario\": \"tatil_gunu_vade_hesabi_ve_bilgilendirme\"\n}"
+            },
+            "name": "ExecutePracticalTests",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+              2080,
+              300
+            ]
+          },
+          {
+            "parameters": {
+              "operation": "write",
+              "filePath": "/workspace/logs/build_and_test_log.json",
+              "fileContent": "={{ JSON.stringify($json) }}"
+            },
+            "name": "WriteTraceLog",
+            "type": "n8n-nodes-base.readWriteFile",
+            "typeVersion": 1,
+            "position": [
+              2340,
+              300
+            ]
+          },
+          {
+            "parameters": {},
+            "name": "Finish",
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [
+              2600,
+              300
+            ]
+          }
+        ],
+        "connections": {
+          "ManualTrigger": {
+            "main": [
+              [
+                {
+                  "node": "ReadBriefFile",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "ReadBriefFile": {
+            "main": [
+              [
+                {
+                  "node": "ReadOpenAPISchema",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "ReadOpenAPISchema": {
+            "main": [
+              [
+                {
+                  "node": "SummarizeBriefGemini",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "SummarizeBriefGemini": {
+            "main": [
+              [
+                {
+                  "node": "CompileWorkflowJSON",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "CompileWorkflowJSON": {
+            "main": [
+              [
+                {
+                  "node": "ValidateSpec",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "ValidateSpec": {
+            "main": [
+              [
+                {
+                  "node": "PublishFreyaAgent",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "AutoFixSpec",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "AutoFixSpec": {
+            "main": [
+              [
+                {
+                  "node": "PublishFreyaAgent",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "PublishFreyaAgent": {
+            "main": [
+              [
+                {
+                  "node": "ExecutePracticalTests",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "ExecutePracticalTests": {
+            "main": [
+              [
+                {
+                  "node": "WriteTraceLog",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "WriteTraceLog": {
+            "main": [
+              [
+                {
+                  "node": "Finish",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        }
+      },
+      "parseError": null,
+      "ok": true
+    },
+    {
+      "id": "faq",
+      "title": "Bilgi tabanı (FAQ)",
+      "purpose": "Asistanın offline cevapladığı 8 soruluk kayıt",
+      "model": "gemini-3.8-flash",
+      "provider": "Google Gemini API (generativelanguage.googleapis.com)",
+      "endpoint": "gemini-3.8-flash:generateContent",
+      "attempts": [
+        "gemini-3.8-flash#1:429",
+        "gemini-3.8-flash#2:429",
+        "gemini-3.8-flash#3:200"
+      ],
+      "startedAt": "2026-10-15T20:47:58.847Z",
+      "durationMs": 35867,
+      "usage": {
+        "promptTokenCount": 359,
+        "candidatesTokenCount": 683,
+        "totalTokenCount": 2702,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 359
+          }
+        ],
+        "thoughtsTokenCount": 1660,
+        "serviceTier": "standard"
+      },
+      "finishReason": "STOP",
+      "promptChars": 1176,
+      "prompt": "Bir okul sunumunda proje hakkında sorulan sorulara cevap verecek kısa bir bilgi tabanı yaz.\n\nProje: Proje: \"Build the Builder\".\nGirdi: bir banka brief'i (Markdown + OpenAPI arac dosyasi).\nCikti: Freya platformunda calisan bir telefon ses agenti (workflow JSON).\nBuilder su asamalardan gecer:\n1) brief_parser.py  -> brief metnindeki kurallari, tablolari, sonuc adlarini cikarir\n2) openapi_parser.py -> arac (tool) semasini ve alanlarini okur\n3) policy_spec.py   -> kurallari PolicySpec nesnesine normalize eder\n4) date_calculator.py -> is gunleri, tatil, vade hesaplarini uretir\n5) workflow_builder.py -> node'lar, prompt'lar, transition'lar, code step'ler\n6) main.py           -> lokal yapısal kontrol + publish + pratik musteri testleri\nHer asamada CIKTI dosyaya yazilir ve build log'a eklenir.\n\nJSON döndür, markdown yok. Şema:\n{\"faq\":[{\"q\":\"soru\",\"kw\":[\"anahtar1\",\"anahtar2\"],\"a\":\"1-2 cevap cümlesi\"}]}\n8 soru yaz. Şunları kapsa: builder ne yapar, brief neden önemli, Gemini nerede kullanılıyor, n8n ne işe yarar, müşteri verisi kullanılıyor mu, ajan nasıl test ediliyor, kod el ile düzeltiliyor mu, projenin zor kısmı neydi.\nTürkçe ve kısa olsun. Her \"a\" en fazla 2 cümle.",
+      "responseText": "{\"faq\":[{\"q\":\"Build the Builder projesi temel olarak ne yapar?\",\"kw\":[\"builder\",\"freya\",\"workflow\",\"ses ajanı\"],\"a\":\"Banka brief'ini ve OpenAPI araç dosyasını okuyarak Freya platformunda çalışan sesli asistan workflow JSON'ını otomatik üretir. Kuralları, hesaplama kodlarını ve diyalog düğümlerini insan müdahalesi olmadan oluşturur.\"},{\"q\":\"Banka brief'i süreç için neden önemlidir?\",\"kw\":[\"brief\",\"kural\",\"iş mantığı\",\"banka\"],\"a\":\"Brief; bankanın karar tablolarını, yasal sınırlarını ve konuşma akış kurallarını içeren ana doğruluk kaynağıdır. Ajanın davranış ve hesaplama mantığı doğrudan bu belgedeki yönergelere göre şekillenir.\"},{\"q\":\"Gemini yapay zekası nerede kullanılıyor?\",\"kw\":[\"gemini\",\"llm\",\"brief_parser\",\"prompt\"],\"a\":\"Gemini, karmaşık brief metinlerindeki kuralları yapılandırılmış verilere dönüştürmek ve ajan için konuşma prompt'ları üretmek amacıyla kullanılır. Metin analizi ve doğal dil çıktılarının standartlaşmasını sağlar.\"},{\"q\":\"n8n bu mimaride ne işe yarar?\",\"kw\":[\"n8n\",\"araç\",\"api\",\"entegrasyon\"],\"a\":\"n8n, ajanın ihtiyaç duyduğu banka servislerini ve OpenAPI üzerinden tanımlanan araçları entegre eden arka plan otomasyon katmanıdır. Ajanın harici sorguları ve veri işlemlerini güvenle çalıştırmasına olanak tanır.\"},{\"q\":\"Süreçte gerçek müşteri verisi kullanılıyor mu?\",\"kw\":[\"müşteri verisi\",\"kvkk\",\"güvenlik\",\"sentetik\"],\"a\":\"Hayır, sistemde hiçbir gerçek müşteri verisi kullanılmaz. Doğrulama ve test süreçlerinde sadece OpenAPI şemasına uygun sentetik ve simüle edilmiş veriler kullanılır.\"},{\"q\":\"Üretilen ses ajanı nasıl test ediliyor?\",\"kw\":[\"test\",\"main.py\",\"simülasyon\",\"doğrulama\"],\"a\":\"main.py ile önce yerel yapısal doğrulama yapılır ve workflow Freya'ya publish edilir. Ardından uçtan uca simüle edilmiş pratik müşteri senaryoları çalıştırılarak ajanın yanıtları test edilir.\"},{\"q\":\"Üretilen kod veya workflow el ile düzeltiliyor mu?\",\"kw\":[\"otomasyon\",\"manuel\",\"kod düzeltme\",\"pipeline\"],\"a\":\"Hayır, tüm pipeline baştan sona otomatik çalışacak biçimde kurgulanmıştır. Her aşama kendi çıktısını dosyaya ve build log'una yazarak süreci insan müdahalesine gerek kalmadan tamamlar.\"},{\"q\":\"Projenin geliştirilmesindeki en zor kısım neydi?\",\"kw\":[\"zorluk\",\"tarih hesabı\",\"policyspec\",\"normalizasyon\"],\"a\":\"Metinsel banka politikalarını hatasız bir PolicySpec nesnesine normalize etmek ve resmi tatil/iş günü mantıklarını hatasız kodlamak en zor kısımdı. Ayrıca tüm durum geçişlerinin Freya düğüm şemasıyla birebir uyumunu sağlamak yüksek hassasiyet gerektirdi.\"}]}",
+      "responseJson": {
+        "faq": [
+          {
+            "q": "Build the Builder projesi temel olarak ne yapar?",
+            "kw": [
+              "builder",
+              "freya",
+              "workflow",
+              "ses ajanı"
+            ],
+            "a": "Banka brief'ini ve OpenAPI araç dosyasını okuyarak Freya platformunda çalışan sesli asistan workflow JSON'ını otomatik üretir. Kuralları, hesaplama kodlarını ve diyalog düğümlerini insan müdahalesi olmadan oluşturur."
+          },
+          {
+            "q": "Banka brief'i süreç için neden önemlidir?",
+            "kw": [
+              "brief",
+              "kural",
+              "iş mantığı",
+              "banka"
+            ],
+            "a": "Brief; bankanın karar tablolarını, yasal sınırlarını ve konuşma akış kurallarını içeren ana doğruluk kaynağıdır. Ajanın davranış ve hesaplama mantığı doğrudan bu belgedeki yönergelere göre şekillenir."
+          },
+          {
+            "q": "Gemini yapay zekası nerede kullanılıyor?",
+            "kw": [
+              "gemini",
+              "llm",
+              "brief_parser",
+              "prompt"
+            ],
+            "a": "Gemini, karmaşık brief metinlerindeki kuralları yapılandırılmış verilere dönüştürmek ve ajan için konuşma prompt'ları üretmek amacıyla kullanılır. Metin analizi ve doğal dil çıktılarının standartlaşmasını sağlar."
+          },
+          {
+            "q": "n8n bu mimaride ne işe yarar?",
+            "kw": [
+              "n8n",
+              "araç",
+              "api",
+              "entegrasyon"
+            ],
+            "a": "n8n, ajanın ihtiyaç duyduğu banka servislerini ve OpenAPI üzerinden tanımlanan araçları entegre eden arka plan otomasyon katmanıdır. Ajanın harici sorguları ve veri işlemlerini güvenle çalıştırmasına olanak tanır."
+          },
+          {
+            "q": "Süreçte gerçek müşteri verisi kullanılıyor mu?",
+            "kw": [
+              "müşteri verisi",
+              "kvkk",
+              "güvenlik",
+              "sentetik"
+            ],
+            "a": "Hayır, sistemde hiçbir gerçek müşteri verisi kullanılmaz. Doğrulama ve test süreçlerinde sadece OpenAPI şemasına uygun sentetik ve simüle edilmiş veriler kullanılır."
+          },
+          {
+            "q": "Üretilen ses ajanı nasıl test ediliyor?",
+            "kw": [
+              "test",
+              "main.py",
+              "simülasyon",
+              "doğrulama"
+            ],
+            "a": "main.py ile önce yerel yapısal doğrulama yapılır ve workflow Freya'ya publish edilir. Ardından uçtan uca simüle edilmiş pratik müşteri senaryoları çalıştırılarak ajanın yanıtları test edilir."
+          },
+          {
+            "q": "Üretilen kod veya workflow el ile düzeltiliyor mu?",
+            "kw": [
+              "otomasyon",
+              "manuel",
+              "kod düzeltme",
+              "pipeline"
+            ],
+            "a": "Hayır, tüm pipeline baştan sona otomatik çalışacak biçimde kurgulanmıştır. Her aşama kendi çıktısını dosyaya ve build log'una yazarak süreci insan müdahalesine gerek kalmadan tamamlar."
+          },
+          {
+            "q": "Projenin geliştirilmesindeki en zor kısım neydi?",
+            "kw": [
+              "zorluk",
+              "tarih hesabı",
+              "policyspec",
+              "normalizasyon"
+            ],
+            "a": "Metinsel banka politikalarını hatasız bir PolicySpec nesnesine normalize etmek ve resmi tatil/iş günü mantıklarını hatasız kodlamak en zor kısımdı. Ayrıca tüm durum geçişlerinin Freya düğüm şemasıyla birebir uyumunu sağlamak yüksek hassasiyet gerektirdi."
+          }
+        ]
+      },
+      "parseError": null,
+      "ok": true
+    }
+  ]
+}

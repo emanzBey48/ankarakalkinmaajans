@@ -1,0 +1,20 @@
+{
+  "case_id": "SYN-025",
+  "brief_id": "BRIEF-005",
+  "scenario": "invalid_or_conflicting_date",
+  "difficulty": "medium",
+  "customer_script": "Customer proposes a date that violates a policy deadline or calendar restriction.",
+  "preconditions": [
+    "Synthetic data only.",
+    "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+  ],
+  "expected_ledger_state": "no_promise_for_invalid_date",
+  "expected_policy_behavior": "Validate against runtime now and applicable product-specific deadline/calendar; ask for a valid alternative.",
+  "required_checks": [
+    "outcome",
+    "policy",
+    "honesty"
+  ],
+  "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+  "not_a_real_bank_case": true
+}

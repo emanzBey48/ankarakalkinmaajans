@@ -1,0 +1,344 @@
+{
+  "rules": [
+    {
+      "brief_id": "BRIEF-001",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "account_lookup_after_identity",
+        "confirm_promise_details",
+        "truthful_tool_success",
+        "dispute_no_promise",
+        "third_party_privacy"
+      ],
+      "must_be_parameterized": [
+        "allowed_payment_dates",
+        "minimum_payment_amount",
+        "maximum_deadline",
+        "identity_attempt_limit",
+        "holiday_calendar",
+        "recovery_procedure"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-001.json"
+    },
+    {
+      "brief_id": "BRIEF-002",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "identity_attempt_limit",
+        "third_party_privacy",
+        "safe_termination"
+      ],
+      "must_be_parameterized": [
+        "identity_attempt_limit",
+        "callback_allowed",
+        "close_call_rules"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-002.json"
+    },
+    {
+      "brief_id": "BRIEF-003",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "dispute_no_promise",
+        "note_tool",
+        "avoid_unverified_claims",
+        "explicit_reentry"
+      ],
+      "must_be_parameterized": [
+        "dispute_categories",
+        "note_schema",
+        "reentry_rules"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-003.json"
+    },
+    {
+      "brief_id": "BRIEF-004",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "account_lookup_after_identity",
+        "minimum_payment",
+        "confirm_promise_details",
+        "no_invalid_promise"
+      ],
+      "must_be_parameterized": [
+        "minimum_payment_amount",
+        "permitted_alternatives",
+        "amount_rounding_rules",
+        "date_limits"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-004.json"
+    },
+    {
+      "brief_id": "BRIEF-005",
+      "expected_rule_categories": [
+        "runtime_now",
+        "deadline_validation",
+        "holiday_weekend_validation",
+        "clarify_invalid_date",
+        "confirm_promise_details"
+      ],
+      "must_be_parameterized": [
+        "maximum_deadline",
+        "minimum_lead_time",
+        "holiday_calendar",
+        "weekend_policy",
+        "date_timezone"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-005.json"
+    },
+    {
+      "brief_id": "BRIEF-006",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "hardship_support",
+        "no_pressure",
+        "respect_decline",
+        "correct_call_outcome"
+      ],
+      "must_be_parameterized": [
+        "support_route",
+        "support_transfer_rules",
+        "outcome_note_requirements"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-006.json"
+    },
+    {
+      "brief_id": "BRIEF-007",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "confirm_promise_details",
+        "truthful_tool_success",
+        "bounded_retry",
+        "recovery_path",
+        "note_after_failure"
+      ],
+      "must_be_parameterized": [
+        "retry_limit",
+        "retryable_error_codes",
+        "recovery_procedure",
+        "note_schema"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-007.json"
+    },
+    {
+      "brief_id": "BRIEF-008",
+      "expected_rule_categories": [
+        "third_party_privacy",
+        "minimal_disclosure",
+        "callback_policy",
+        "truthful_tool_success"
+      ],
+      "must_be_parameterized": [
+        "callback_allowed",
+        "callback_time_window",
+        "required_callback_fields"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-008.json"
+    },
+    {
+      "brief_id": "BRIEF-009",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "multi_product_iteration",
+        "per_product_policy",
+        "explicit_product_consent",
+        "no_unaccepted_promises",
+        "truthful_summary"
+      ],
+      "must_be_parameterized": [
+        "product_minimums",
+        "product_deadlines",
+        "per_product_calendars",
+        "maximum_promises_per_call"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-009.json"
+    },
+    {
+      "brief_id": "BRIEF-010",
+      "expected_rule_categories": [
+        "multi_product_iteration",
+        "per_product_deadline",
+        "clarify_partial_date_validity",
+        "no_silent_date_change"
+      ],
+      "must_be_parameterized": [
+        "product_deadlines",
+        "calendar_restrictions",
+        "date_limits"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-010.json"
+    },
+    {
+      "brief_id": "BRIEF-011",
+      "expected_rule_categories": [
+        "number_resolution",
+        "latest_correction",
+        "clarify_ambiguity",
+        "amount_validation",
+        "explicit_confirmation"
+      ],
+      "must_be_parameterized": [
+        "minimum_payment_amount",
+        "amount_rounding_rules",
+        "currency_format"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-011.json"
+    },
+    {
+      "brief_id": "BRIEF-012",
+      "expected_rule_categories": [
+        "identity_before_disclosure",
+        "account_lookup_after_identity",
+        "multi_product_iteration",
+        "dispute_no_promise",
+        "per_product_policy",
+        "runtime_now",
+        "confirm_promise_details",
+        "truthful_tool_success",
+        "bounded_retry",
+        "callback_policy",
+        "transfer_policy",
+        "close_call_rules"
+      ],
+      "must_be_parameterized": [
+        "all_policy_values_must_be_extracted_from_brief_and_schema"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-012.json"
+    },
+    {
+      "brief_id": "BRIEF-013",
+      "expected_rule_categories": [
+        "source_conflict_resolution",
+        "identity_before_disclosure",
+        "per_product_policy",
+        "dispute_no_promise",
+        "explicit_consent",
+        "truthful_tool_success"
+      ],
+      "must_be_parameterized": [
+        "source_precedence",
+        "effective_dates",
+        "product_constraints",
+        "dispute_categories"
+      ],
+      "invariants": [
+        "Never disclose account or debt information before successful identity verification.",
+        "Never claim a tool operation succeeded without a success result.",
+        "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+        "Never create a promise that violates applicable brief rules or current product constraints.",
+        "Do not create a promise for a disputed or declined product when the brief says not to.",
+        "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+      ],
+      "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+      "source_brief_path": "briefs/brief-013.json"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "BRIEF-004",
+  "title": "Maple Lending — Payment minimum",
+  "difficulty": "medium",
+  "split": "train",
+  "brief_text": "After identity verification, retrieve the current account and explain the amount due. Do not record a payment promise below the minimum permitted amount. If the customer cannot afford the full balance, offer only policy-permitted alternatives. Read back the selected amount and date and obtain confirmation before creating the promise. If no permitted option is accepted, record the appropriate outcome and end the call respectfully.",
+  "policy_intents": [
+    "identity_before_disclosure",
+    "account_lookup_after_identity",
+    "minimum_payment",
+    "confirm_promise_details",
+    "no_invalid_promise"
+  ],
+  "variable_policy_fields": [
+    "minimum_payment_amount",
+    "permitted_alternatives",
+    "amount_rounding_rules",
+    "date_limits"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "case_id": "SYN-037",
+  "brief_id": "BRIEF-008",
+  "scenario": "third_party_answer",
+  "difficulty": "medium",
+  "customer_script": "A relative or other third party answers the call.",
+  "preconditions": [
+    "Synthetic data only.",
+    "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+  ],
+  "expected_ledger_state": "no_disclosure_no_promise",
+  "expected_policy_behavior": "Do not disclose account existence or debt; follow permitted callback or close-call path.",
+  "required_checks": [
+    "outcome",
+    "policy",
+    "honesty"
+  ],
+  "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+  "not_a_real_bank_case": true
+}

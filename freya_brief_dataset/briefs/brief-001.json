@@ -1,0 +1,24 @@
+{
+  "id": "BRIEF-001",
+  "title": "Northstar Finance — Single-product payment reminders",
+  "difficulty": "easy",
+  "split": "train",
+  "brief_text": "You are calling customers about one overdue credit product. Verify identity before revealing account or debt information. After successful verification, retrieve the account details. Explain the current overdue amount accurately. A payment promise may be recorded only if the customer agrees to a permitted amount and a valid date. Confirm the product, amount, and date before recording. If the promise tool succeeds, confirm it was recorded; if it fails, do not claim success and follow the approved recovery path. If the customer disputes the debt, record the dispute as a note and do not seek a payment promise. If another person answers, disclose no financial information and follow the approved callback or close-call procedure.",
+  "policy_intents": [
+    "identity_before_disclosure",
+    "account_lookup_after_identity",
+    "confirm_promise_details",
+    "truthful_tool_success",
+    "dispute_no_promise",
+    "third_party_privacy"
+  ],
+  "variable_policy_fields": [
+    "allowed_payment_dates",
+    "minimum_payment_amount",
+    "maximum_deadline",
+    "identity_attempt_limit",
+    "holiday_calendar",
+    "recovery_procedure"
+  ],
+  "notes": "All policy values must be obtained from the actual brief and account/tool responses; this sample deliberately leaves them unspecified."
+}

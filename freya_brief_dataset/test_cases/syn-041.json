@@ -1,0 +1,20 @@
+{
+  "case_id": "SYN-041",
+  "brief_id": "BRIEF-009",
+  "scenario": "multi_product_partial_or_full_acceptance",
+  "difficulty": "hard",
+  "customer_script": "Customer has multiple products and explicitly accepts only the stated product(s), declining the others.",
+  "preconditions": [
+    "Synthetic data only.",
+    "Concrete amounts, dates, identity-attempt limits, and allowed values must be supplied by the test fixture/brief rather than hardcoded into builder logic."
+  ],
+  "expected_ledger_state": "promises_only_for_explicitly_accepted_valid_products",
+  "expected_policy_behavior": "Iterate products independently; validate each product's amount/date; create promises only for accepted products.",
+  "required_checks": [
+    "outcome",
+    "policy",
+    "honesty"
+  ],
+  "oracle_status": "semantic_template_requires_fixture_values_and_tool-schema-binding",
+  "not_a_real_bank_case": true
+}

@@ -1,0 +1,22 @@
+{
+  "id": "BRIEF-013",
+  "title": "Stonebridge Collections — Raw-materials-derived policy",
+  "difficulty": "hard",
+  "split": "validation",
+  "brief_text": "This instruction is assembled from a policy memo and an operations update. Follow the newest explicitly applicable rule where the documents conflict, but flag unresolved conflicts rather than inventing a rule. Verify the caller before disclosure. Record a promise only after checking current product-specific constraints and obtaining the customer's explicit agreement. If a debt is disputed, use the dispute path and do not record a promise for that disputed product. Tool results are authoritative for whether an operation succeeded; a spoken confirmation is not proof of a ledger change.",
+  "policy_intents": [
+    "source_conflict_resolution",
+    "identity_before_disclosure",
+    "per_product_policy",
+    "dispute_no_promise",
+    "explicit_consent",
+    "truthful_tool_success"
+  ],
+  "variable_policy_fields": [
+    "source_precedence",
+    "effective_dates",
+    "product_constraints",
+    "dispute_categories"
+  ],
+  "notes": "Tests extraction from conflicting/dated source materials. The builder must preserve provenance and flag ambiguity."
+}

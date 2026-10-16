@@ -1,0 +1,34 @@
+# Secrets
+env.sh
+set_env.bat
+geminiapi.txt.txt
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+
+# Dependencies / build artifacts
+node_modules/
+.pnpm-store/
+__pycache__/
+*.pyc
+.wrangler/
+.wrangler-state/
+.vercel/
+dist/
+build/
+
+# Run artifacts (large, local-only)
+builder-session.jsonl
+last_call.json
+out/
+results/
+traces/
+hackathon-upload/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

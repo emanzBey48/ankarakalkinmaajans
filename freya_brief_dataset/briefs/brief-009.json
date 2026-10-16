@@ -1,0 +1,21 @@
+{
+  "id": "BRIEF-009",
+  "title": "Aspen Bank — Multi-product independent decisions",
+  "difficulty": "hard",
+  "split": "train",
+  "brief_text": "A verified customer may have multiple overdue products. Retrieve all relevant product details and handle each product independently. The customer may agree to pay one product and decline others. Create promises only for products explicitly accepted by the customer. For each promise, use that product's own eligible amount and date restrictions. Never apply one product's deadline or minimum amount to another product. Summarize recorded and declined products separately.",
+  "policy_intents": [
+    "identity_before_disclosure",
+    "multi_product_iteration",
+    "per_product_policy",
+    "explicit_product_consent",
+    "no_unaccepted_promises",
+    "truthful_summary"
+  ],
+  "variable_policy_fields": [
+    "product_minimums",
+    "product_deadlines",
+    "per_product_calendars",
+    "maximum_promises_per_call"
+  ]
+}

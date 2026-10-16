@@ -1,0 +1,27 @@
+{
+  "brief_id": "BRIEF-009",
+  "expected_rule_categories": [
+    "identity_before_disclosure",
+    "multi_product_iteration",
+    "per_product_policy",
+    "explicit_product_consent",
+    "no_unaccepted_promises",
+    "truthful_summary"
+  ],
+  "must_be_parameterized": [
+    "product_minimums",
+    "product_deadlines",
+    "per_product_calendars",
+    "maximum_promises_per_call"
+  ],
+  "invariants": [
+    "Never disclose account or debt information before successful identity verification.",
+    "Never claim a tool operation succeeded without a success result.",
+    "Never create a payment promise without explicit customer agreement to the exact product, amount, and date.",
+    "Never create a promise that violates applicable brief rules or current product constraints.",
+    "Do not create a promise for a disputed or declined product when the brief says not to.",
+    "Use runtime now and policy/calendar inputs for date validation; do not hardcode example dates."
+  ],
+  "expected_values_status": "Policy values are intentionally not invented; extract them from the brief and actual tool schema at runtime.",
+  "source_brief_path": "briefs/brief-009.json"
+}

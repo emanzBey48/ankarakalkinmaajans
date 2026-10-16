@@ -1,0 +1,19 @@
+{
+  "id": "BRIEF-006",
+  "title": "Birch Finance — Hardship and support option",
+  "difficulty": "medium",
+  "split": "train",
+  "brief_text": "Verify identity before discussing the debt. If the customer describes financial hardship, acknowledge it and offer the support route defined by the policy. Respect the customer's answer. Do not pressure the customer to make a promise. If they decline support and no valid promise is agreed, record the appropriate call outcome using the available tools.",
+  "policy_intents": [
+    "identity_before_disclosure",
+    "hardship_support",
+    "no_pressure",
+    "respect_decline",
+    "correct_call_outcome"
+  ],
+  "variable_policy_fields": [
+    "support_route",
+    "support_transfer_rules",
+    "outcome_note_requirements"
+  ]
+}

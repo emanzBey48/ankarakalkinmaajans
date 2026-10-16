@@ -1,0 +1,21 @@
+{
+  "id": "BRIEF-005",
+  "title": "Willow Bank — Deadline and calendar constraints",
+  "difficulty": "medium",
+  "split": "train",
+  "brief_text": "The valid promise date is determined by the current runtime date, the account's deadline, and the calendar restrictions stated in the brief. Never infer a deadline from a sample conversation or use a hardcoded date. If a customer proposes a date outside the permitted window or on a prohibited calendar day, explain the constraint and ask for a valid alternative. Only record a date the customer explicitly confirms.",
+  "policy_intents": [
+    "runtime_now",
+    "deadline_validation",
+    "holiday_weekend_validation",
+    "clarify_invalid_date",
+    "confirm_promise_details"
+  ],
+  "variable_policy_fields": [
+    "maximum_deadline",
+    "minimum_lead_time",
+    "holiday_calendar",
+    "weekend_policy",
+    "date_timezone"
+  ]
+}

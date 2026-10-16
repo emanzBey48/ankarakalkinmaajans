@@ -1,0 +1,25 @@
+{
+  "id": "BRIEF-012",
+  "title": "Ash Finance — Full workflow with exceptions",
+  "difficulty": "hard",
+  "split": "test",
+  "brief_text": "Verify identity before any account disclosure. Retrieve current account information only after successful verification. Handle multiple products independently using each product's current policy. Do not create promises for disputed products, products the customer declines, or amounts/dates that violate the brief. Validate dates against runtime now, product deadlines, and calendar restrictions. Confirm each product, amount, and date before recording. Inspect tool results and report success only when the relevant tool confirms success. Follow policy-defined retry limits, note requirements, callback rules, and transfer conditions. Close the call only after the appropriate outcome has been recorded or the permitted fallback has been followed.",
+  "policy_intents": [
+    "identity_before_disclosure",
+    "account_lookup_after_identity",
+    "multi_product_iteration",
+    "dispute_no_promise",
+    "per_product_policy",
+    "runtime_now",
+    "confirm_promise_details",
+    "truthful_tool_success",
+    "bounded_retry",
+    "callback_policy",
+    "transfer_policy",
+    "close_call_rules"
+  ],
+  "variable_policy_fields": [
+    "all_policy_values_must_be_extracted_from_brief_and_schema"
+  ],
+  "notes": "Held-out composite brief; never use this as a hardcoded template."
+}
