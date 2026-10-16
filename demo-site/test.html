@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101914">
+  <title>Build the Builder — Test Koşusu</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+    :root{--bg:#101914;--panel:#18241d;--panel2:#1d2b23;--line:#2f4136;--text:#f1f3e9;--muted:#a7b4a7;--lime:#c7f36a;--mint:#78dfb1;--amber:#f1bf73;--red:#fa9582;--mono:'DM Mono',monospace;--sans:Manrope,Arial,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--sans)}button{font:inherit;color:inherit}.hidden{display:none!important}
+    .shell{max-width:1180px;padding:0 28px;margin:auto}
+    .topbar{height:72px;border-bottom:1px solid #29372e;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.4px}.mark{width:30px;height:30px;border-radius:9px;background:var(--lime);color:#172116;display:grid;place-items:center;font-weight:900}
+    .brand small{font:10px var(--mono);color:var(--muted);letter-spacing:1.2px;margin-left:5px}
+    .nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{color:#b8c4b8;text-decoration:none;font-size:12px;padding:9px 12px;border-radius:9px}.nav a:hover{background:#243228;color:var(--lime)}.nav a.on{background:#243228;color:var(--lime)}
+    .kicker,.eyebrow{font:10px var(--mono);color:var(--lime);letter-spacing:1.6px;text-transform:uppercase}
+    .hero{padding:44px 0 26px}.hero h1{font-size:clamp(30px,4.4vw,46px);letter-spacing:-2.1px;line-height:1.08;margin:14px 0}.hero h1 em{font-style:normal;color:var(--lime)}
+    .lead{color:#bdc8bc;font-size:15px;max-width:680px}
+    .section{padding:26px 0 34px;border-top:1px solid #2a392f}
+    .section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:17px;gap:15px;flex-wrap:wrap}
+    .section-head h2{margin:5px 0 0;font-size:23px;letter-spacing:-.8px}.section-head p{margin:0;color:var(--muted);font-size:11px}
+
+    .input-grid{display:grid;grid-template-columns:1.32fr .68fr;gap:18px;align-items:start}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+    .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);background:#1b2921}
+    .file-chip{font:11px var(--mono);color:var(--lime);background:#213128;border:1px solid #3a4e3e;border-radius:7px;padding:5px 9px}
+    .meta{font:10px var(--mono);color:var(--muted)}
+    .brief-body{padding:18px 20px;max-height:470px;overflow:auto;font-size:13.5px;line-height:1.62;color:#d5ded2}
+    .brief-body h1{font-size:19px;letter-spacing:-.5px;color:#fff;margin:0 0 4px}
+    .brief-body h2{font-size:12px;font-family:var(--mono);letter-spacing:1.2px;text-transform:uppercase;color:var(--lime);margin:22px 0 8px;padding-bottom:5px;border-bottom:1px solid #2b3c31}
+    .brief-body p{margin:0 0 10px}
+    .brief-body ul,.brief-body ol{margin:0 0 12px;padding-left:20px}.brief-body li{margin:0 0 5px}
+    .brief-body ul.sub{margin:5px 0 2px;padding-left:18px;color:#bcc8b9;font-size:12.5px}
+    .brief-body li>ul.sub li{margin:0 0 3px}
+    .brief-body code{font:12px var(--mono);background:#223027;border:1px solid #33463a;border-radius:5px;padding:1px 5px;color:var(--mint)}
+    .brief-body strong{color:#fff;font-weight:700}
+    .brief-body .quote{margin:12px 0;padding:10px 13px;border-left:3px solid var(--amber);background:#241f16;border-radius:0 9px 9px 0;color:#e8d9bf;font-size:13px}
+    .brief-body table{border-collapse:collapse;width:100%;margin:10px 0 14px;font-size:12.5px}
+    .brief-body th{font:10px var(--mono);letter-spacing:.9px;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid #3a4e3e;padding:7px 9px}
+    .brief-body td{padding:7px 9px;border-bottom:1px solid #26342b;color:#cdd8ca;vertical-align:top}
+    .brief-body tr:last-child td{border-bottom:0}
+
+    .task-body{padding:17px 18px}
+    .cmd{font:12px var(--mono);color:var(--mint);background:#0d1611;border:1px solid #2b3c31;border-radius:9px;padding:11px 12px;margin:0 0 14px;word-break:break-all}
+    .task-list{margin:0 0 14px;padding-left:18px;color:#c3cfc0;font-size:13px}.task-list li{margin:0 0 6px}
+    .crit{border-top:1px solid var(--line);padding-top:13px}
+    .crit ol{margin:8px 0 0;padding-left:18px;font-size:13px;color:#c3cfc0}.crit ol li{margin:0 0 6px}
+    .crit b{color:#fff}
+    .run-btn{width:100%;margin-top:16px;border:0;border-radius:11px;padding:15px 18px;background:var(--lime);color:#172116;font-weight:800;font-size:14px;letter-spacing:.4px;cursor:pointer;transition:.15s}
+    .run-btn:hover:not(:disabled){background:#d5ff7d;transform:translateY(-1px)}
+    .run-btn:disabled{background:#33463a;color:#8c9a8b;cursor:not-allowed}
+    .run-hint{font:10px var(--mono);color:var(--muted);text-align:center;margin:9px 0 0}
+
+    .stagebar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+    .stage{font:10px var(--mono);letter-spacing:1px;color:#7d8c7e;background:#1b2921;border:1px solid #2b3c31;border-radius:20px;padding:6px 12px}
+    .stage.now{color:var(--lime);border-color:#4d6b45;background:#24331f}
+    .stage.done{color:#9fc48f;border-color:#31462f}
+    .console{background:#0b120e;border:1px solid #2a3a30;border-radius:14px;overflow:hidden}
+    .console-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 15px;border-bottom:1px solid #233129;background:#101a14;flex-wrap:wrap}
+    .console-head .t{font:11px var(--mono);color:#b9c8b4}
+    .console-tools{display:flex;gap:7px;align-items:center}
+    .speed{display:flex;border:1px solid #2f4136;border-radius:8px;overflow:hidden}
+    .speed button{background:#16211a;border:0;padding:6px 11px;font:10px var(--mono);letter-spacing:.8px;color:#8b9a8c;cursor:pointer}
+    .speed button.on{background:var(--lime);color:#172116}
+    .ghost{background:#16211a;border:1px solid #2f4136;border-radius:8px;padding:6px 11px;font:10px var(--mono);letter-spacing:.8px;color:#b9c8b4;cursor:pointer}
+    .ghost:hover{color:var(--lime);border-color:#4d6b45}
+    .console-body{padding:14px 16px;height:330px;overflow:auto;font:12px/1.85 var(--mono);color:#c8d5c4}
+    .console-body::-webkit-scrollbar{width:8px}.console-body::-webkit-scrollbar-thumb{background:#2b3c31;border-radius:8px}
+    .line{display:block;white-space:pre-wrap;word-break:break-word}
+    .line .t{color:#5d6f60;margin-right:9px}
+    .line .src{color:var(--mint);margin-right:7px}
+    .line.warn .src{color:var(--amber)}
+    .line.bad .src{color:var(--red)}
+    .line.good .src{color:var(--lime)}
+    .badge{font:10px var(--mono);letter-spacing:.7px;border-radius:5px;padding:2px 7px}
+    .badge.pass{color:#0f1c12;background:var(--mint)}.badge.fail{color:#2a1410;background:var(--red)}
+    .progress{height:3px;background:#1b2921}
+    .progress i{display:block;height:100%;width:0;background:var(--lime);transition:width .3s ease}
+
+    .score{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
+    .score-num{font-size:56px;font-weight:800;letter-spacing:-3px;color:var(--lime);line-height:1}
+    .score-num span{font-size:20px;color:var(--muted);letter-spacing:-.5px}
+    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:11px}
+    .metric{background:#1d2b23;border:1px solid var(--line);border-radius:11px;padding:12px 13px}
+    .metric label{display:block;font:9px var(--mono);letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+    .metric strong{font-size:19px;letter-spacing:-.6px}
+
+    .table-wrap{border:1px solid var(--line);border-radius:14px;overflow:auto;background:var(--panel)}
+    table.cases{width:100%;border-collapse:collapse;font-size:13px}
+    table.cases th{font:10px var(--mono);letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);background:#1b2921;white-space:nowrap}
+    table.cases td{padding:11px 14px;border-bottom:1px solid #233129;vertical-align:top}
+    table.cases tbody tr.caserow{cursor:pointer;transition:background .15s}
+    table.cases tbody tr.caserow:hover{background:#1e2c23}
+    table.cases tbody tr.caserow.open{background:#1e2c23;box-shadow:inset 3px 0 0 var(--lime)}
+    table.cases tbody tr.failrow td{background:#2a1a1855}
+    .case-id{font:11px var(--mono);color:var(--muted);white-space:nowrap}
+    .case-info b{display:block;color:#fff;font-weight:600}
+    .case-info small{color:var(--muted);font-size:11.5px;font-family:var(--mono)}
+    .chev{color:var(--lime);font-size:11px;margin-left:6px;transition:transform .2s;display:inline-block}
+    tr.open .chev{transform:rotate(90deg)}
+    tr.caserow .go{font:10px var(--mono);color:var(--lime);white-space:nowrap}
+
+    /* --- sohbet kaydi --- */
+    tr.convrow>td{padding:0;background:#111c16;border-bottom:1px solid var(--line)}
+    .conv{padding:18px 20px 22px}
+    .conv-head{display:flex;gap:9px;flex-wrap:wrap;align-items:center;font:10px var(--mono);color:var(--muted);padding-bottom:12px;border-bottom:1px dashed #2a3b30;margin-bottom:14px}
+    .conv-head .chip{background:#1c2a22;border:1px solid #2e4235;border-radius:6px;padding:4px 8px;color:#c2d0bf}
+    .conv-body{display:flex;flex-direction:column;gap:8px}
+    .node{font:10px var(--mono);color:#6c7e6f;letter-spacing:1px;display:flex;align-items:center;gap:9px;margin:9px 0 3px}
+    .node:before{content:'';flex:0 0 26px;height:1px;background:#33473a}
+    .say{display:flex;gap:10px;max-width:86%}
+    .say .who{flex:0 0 62px;font:9px var(--mono);letter-spacing:1px;padding-top:7px;color:var(--muted)}
+    .say .bubble{background:#1c2a22;border:1px solid #2e4235;border-radius:4px 12px 12px 12px;padding:9px 13px;color:#dde5d9;line-height:1.5}
+    .say .t{font:10px var(--mono);color:#6c7e6f;margin-left:7px;white-space:nowrap}
+    .say.customer{margin-left:auto;flex-direction:row-reverse}
+    .say.customer .bubble{background:#22301f;border-color:#3b5535;border-radius:12px 4px 12px 12px;color:#e6eee0}
+    .say.customer .who{text-align:right;color:#8fae7e}
+    .tool{align-self:center;display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#0f1a14;border:1px solid #27382d;border-radius:8px;padding:6px 11px;margin:3px 0 3px 71px;font:10.5px var(--mono);color:#9fb3a2}
+    .tool .fn{color:var(--mint)}
+    .tool .arg{color:#7f9184}
+    .tool .res{padding:2px 6px;border-radius:4px;font-size:9.5px;letter-spacing:.5px}
+    .tool .res.ok{color:#0f1c12;background:var(--mint)}
+    .tool .res.no{color:#2a1410;background:var(--red)}
+    .end{align-self:center;font:10px var(--mono);color:var(--muted);letter-spacing:.8px;margin:10px 0 0 71px;border-top:1px dashed #2a3b30;padding-top:10px;width:100%}
+    .conv-fail{margin-top:16px;border:1px solid #6b3a34;background:#2a1a18;border-radius:10px;padding:13px 15px}
+    .conv-fail h4{margin:0 0 8px;font:10px var(--mono);letter-spacing:1.3px;color:var(--red);text-transform:uppercase}
+    .conv-fail ul{margin:0;padding-left:17px;color:#e3c4bd;font-size:12.5px;line-height:1.55}
+    .conv-fail li{margin:0 0 6px}
+    .callout{background:#1d2b23;border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:0 12px 12px 0;padding:13px 16px;color:#c3cfc0;font-size:13px;margin-top:18px}
+    footer{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:1px solid #2a392f;padding:20px 0 34px;font:10px var(--mono);letter-spacing:1px;color:#6d7d70}
+    @media(max-width:920px){.input-grid{grid-template-columns:1fr}.score{grid-template-columns:1fr}.say{max-width:100%}.tool,.end{margin-left:0}}
+  </style>
+</head>
+<body>
+  <header class="topbar shell">
+    <div class="brand"><span class="mark">B</span> Build the Builder <small>TEST KOŞUSU</small></div>
+    <nav class="nav">
+      <a href="presentation.html">Sunum</a>
+      <a href="test" class="on">Test koşusu</a>
+      <a href="https://github.com/emanzBey48/freya-bank-statement-builder" target="_blank" rel="noopener">Repo</a>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="kicker">Brief → politika → iş akışı → test</div>
+      <h1>Builder'a bir brief ver,<br><em>ajanın kendisini üretsin.</em></h1>
+      <p class="lead">Aşağıdaki brief dosyası builder'ın girdisi, sağdaki tanım ise görevi. <b>Testi Başlat</b> dendiğinde okuma, politika çıkarma, iş akışı derleme, yayınlama ve test koşusu zinciri baştan sona görünür. Koşu bitince <b>10 vakanın gerçek sohbet kaydı</b> tıklanabilir hâle gelir.</p>
+    </section>
+
+    <section class="section" id="girdi">
+      <div class="section-head">
+        <div><div class="eyebrow">01 / Girdi</div><h2>Brief dosyası ve görev</h2></div>
+        <p>Builder'ın okuyacağı dosya ve ne üreteceğinin tanımı</p>
+      </div>
+
+      <div class="input-grid">
+        <article class="card">
+          <div class="card-head">
+            <span class="file-chip">data/brief-demo.md</span>
+            <span class="meta" id="briefmeta">yükleniyor…</span>
+          </div>
+          <div class="brief-body" id="brief"><p style="color:var(--muted)">Brief yükleniyor…</p></div>
+        </article>
+
+        <aside class="card">
+          <div class="card-head"><span class="file-chip">GÖREV</span><span class="meta">task.json</span></div>
+          <div class="task-body">
+            <div class="cmd">python3 builder/final_case.py data/brief-demo.md</div>
+            <ul class="task-list">
+              <li><b style="color:#fff">Girdi:</b> <code style="font:11px var(--mono);color:var(--mint)">data/brief-demo.md</code> — tek dosya, ek klasör yok.</li>
+              <li><b style="color:#fff">Çıktı:</b> Freya'da yayınlanmış bir telefon ajanı ve bir test koşusu.</li>
+              <li><b style="color:#fff">Elle düzenleme yok:</b> ajan brief'ten üretilir, sonra dokunulmaz.</li>
+            </ul>
+
+            <div class="crit">
+              <div class="eyebrow">Kabul ölçütleri</div>
+              <ol>
+                <li><b>Kayıt</b> — sözler, notlar ve aktarımlar brief'in gerektirdiği gibi oluşur.</li>
+                <li><b>Politika</b> — görüşme brief'in dışına çıkmaz.</li>
+                <li><b>Dürüstlük</b> — araç başarısız olursa ajan bunu müşteriye söyler.</li>
+                <li><b>Kapanış</b> — her görüşme tam olarak bir <code style="font:11px var(--mono);color:var(--mint)">close_call</code> ile biter.</li>
+              </ol>
+            </div>
+
+            <button class="run-btn" id="start" disabled>YÜKLENİYOR…</button>
+            <p class="run-hint" id="hint">Kayıtlar yükleniyor…</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="kosu">
+      <div class="section-head">
+        <div><div class="eyebrow">02 / İş akışı</div><h2>Builder konsolu</h2></div>
+        <p>Her satır, gerçek bir adımın ne yaptığını gösterir</p>
+      </div>
+
+      <div class="stagebar" id="stagebar"></div>
+
+      <div class="console">
+        <div class="console-head">
+          <span class="t">builder/final_case.py — konsol</span>
+          <div class="console-tools">
+            <div class="speed" role="group" aria-label="Koşu hızı">
+              <button data-speed="1" class="on">1X</button>
+              <button data-speed="3">3X</button>
+              <button data-speed="6">6X</button>
+            </div>
+            <button class="ghost" id="reset">SIFIRLA</button>
+          </div>
+        </div>
+        <div class="console-body" id="console"><span class="line cmd">$ <span class="t">--:--</span>builder/final_case.py data/brief-demo.md<span class="t">  ▶  TESTİ BAŞLAT'a bas</span></span></div>
+        <div class="progress"><i id="bar"></i></div>
+      </div>
+    </section>
+
+    <section class="section hidden" id="sonuc">
+      <div class="section-head">
+        <div><div class="eyebrow">03 / Sonuç</div><h2>Koşu raporu</h2></div>
+        <p>Bir satıra tıkla — o vakanın gerçek sohbet kaydı açılır</p>
+      </div>
+
+      <div class="score">
+        <div class="score-num"><span id="passn">0</span><span> / <span id="totaln">10</span></span></div>
+        <div class="metrics">
+          <div class="metric"><label>Başarı</label><strong id="pct">0%</strong></div>
+          <div class="metric"><label>Vaka</label><strong id="mn-cases">10</strong></div>
+          <div class="metric"><label>Toplam süre</label><strong id="mn-secs">—</strong></div>
+          <div class="metric"><label>En yavaş tur</label><strong id="mn-slow">—</strong></div>
+          <div class="metric"><label>Araç çağrısı</label><strong id="mn-tools">—</strong></div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="cases">
+          <thead><tr><th>Vaka</th><th>Senaryo</th><th>Süre</th><th>Gözlenen sonuç</th><th>Durum</th><th></th></tr></thead>
+          <tbody id="resultbody"></tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <b>Sunum notu — ne gerçek, ne gösterim</b><br>
+        Konsol satırları <b>gösterimdir</b>: sayfa hiçbir API'ye bağlanmaz, zincir hazır veriden oynatılır.<br>
+        Buna karşılık tablodaki <b>10 vakanın tamamı gerçektir</b>: vaka adları, süreler, araç çağrıları ve
+        açılan sohbet kayıtları Freya'dan <code style="font:11px var(--mono);color:var(--mint)">get_call()</code> ile
+        çekilmiş canlı kayıtlardır. Kalan iki vakanın sözcüğü sözcüğüne hakem notuyla birlikte gösterilir.
+      </div>
+    </section>
+
+    <footer><span>BUILD THE BUILDER · TEST KOŞUSU</span><span class="source">Kaynak: results/final-brief-a.json + Freya get_call()</span><span>Sentetik müşteri verisi</span></footer>
+  </main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================ brief ============================ */
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  function inline(s) {
+    return esc(s).replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*\*/g, '<em>$1</em>');
+  }
+  function splitRow(r) { return r.trim().replace(/^\||\|$/g, '').split('|').map(function (c) { return c.trim(); }); }
+
+  function md(src) {
+    var lines = src.replace(/\r\n/g, '\n').split('\n'), out = [], i = 0;
+    while (i < lines.length) {
+      var L = lines[i];
+      if (!L.trim()) { i++; continue; }
+      if (/^\s*\|/.test(L)) {
+        var rows = [];
+        while (i < lines.length && /^\s*\|/.test(lines[i])) rows.push(lines[i++]);
+        var body = rows.slice(1).filter(function (r) { return !/^[\s|:-]+$/.test(r); });
+        out.push('<table><thead><tr>' + splitRow(rows[0]).map(function (h) { return '<th>' + inline(h) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+          body.map(function (r) { return '<tr>' + splitRow(r).map(function (c) { return '<td>' + inline(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table>');
+        continue;
+      }
+      var h = L.match(/^(#{1,3})\s+(.*)$/);
+      if (h) { out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>'); i++; continue; }
+      if (/^>\s?/.test(L)) {
+        var q = [];
+        while (i < lines.length && /^>\s?/.test(lines[i])) { q.push(lines[i].replace(/^>\s?/, '')); i++; }
+        out.push('<div class="quote">' + inline(q.join(' ')) + '</div>');
+        continue;
+      }
+      if (/^[-*]\s+/.test(L)) {
+        var ul = [];
+        while (i < lines.length && /^[-*]\s+/.test(lines[i])) { ul.push('<li>' + inline(lines[i].replace(/^[-*]\s+/, '')) + '</li>'); i++; }
+        out.push('<ul>' + ul.join('') + '</ul>');
+        continue;
+      }
+      if (/^\d+\.\s+/.test(L)) {
+        var ol = [], j = i;
+        while (j < lines.length && /^\d+\.\s+/.test(lines[j])) {
+          var body2 = lines[j].replace(/^\d+\.\s+/, ''); j++;
+          var sub = [];
+          while (j < lines.length && /^\s{2,}[-*]\s+/.test(lines[j])) { sub.push('<li>' + inline(lines[j].replace(/^\s*[-*]\s+/, '')) + '</li>'); j++; }
+          ol.push('<li>' + inline(body2) + (sub.length ? '<ul class="sub">' + sub.join('') + '</ul>' : '') + '</li>');
+        }
+        out.push('<ol>' + ol.join('') + '</ol>'); i = j; continue;
+      }
+      var p = [];
+      while (i < lines.length && lines[i].trim() && !/^[|>#]|^[-*]\s+|^\d+\.\s+|^#{1,3}\s/.test(lines[i])) { p.push(lines[i]); i++; }
+      out.push('<p>' + inline(p.join(' ')) + '</p>');
+    }
+    return out.join('');
+  }
+
+  fetch('data/brief-demo.md')
+    .then(function (r) { return r.text(); })
+    .then(function (t) {
+      document.getElementById('brief').innerHTML = md(t);
+      var rules = (t.match(/^\d+\.\s/gm) || []).length;
+      document.getElementById('briefmeta').textContent =
+        rules + ' kural · ' + (t.length / 1024).toFixed(1) + ' KB · ' +
+        document.querySelectorAll('#brief table').length + ' tablo';
+    })
+    .catch(function () {
+      document.getElementById('brief').innerHTML = '<p style="color:var(--red)">data/brief-demo.md yüklenemedi.</p>';
+      document.getElementById('briefmeta').textContent = 'yüklenemedi';
+    });
+
+  /* ====================== gercek kayitlar ====================== */
+  var DOC = null, CASES = [];
+
+  function outcomeLine(c) {
+    if (!c.pass) return 'Beklenen kayıt oluşmadı, görüşme kapanmadı.';
+    var t = c.tools || [];
+    if (t.indexOf('create_promise') >= 0) return 'Ödeme sözü kaydedildi, görüşme kapandı.';
+    if (t.indexOf('transfer_to_agent') >= 0) return 'Yetkili ekibe aktarıldı, görüşme kapandı.';
+    if (t.indexOf('schedule_callback') >= 0) return 'Geri arama planlandı, görüşme kapandı.';
+    if (t.indexOf('close_call') >= 0) return 'Söz alınmadan, doğru sonuçla kapatıldı.';
+    return 'Görüşme kapandı.';
+  }
+
+  function fmtDur(s) {
+    if (!s && s !== 0) return '—';
+    s = Math.round(s);
+    if (s < 60) return s + ' sn';
+    return Math.floor(s / 60) + ' dk ' + (s % 60) + ' sn';
+  }
+
+  function toolChip(t) {
+    var ok = t.ok;
+    var label = ok === true ? 'OK' : ok === false ? 'HATA' : '—';
+    var cls = ok === true ? 'ok' : ok === false ? 'no' : '';
+    var html = '<div class="tool"><span class="fn">' + esc(t.fn) + '</span>';
+    if (t.arg) html += '<span class="arg">' + esc(t.arg) + '</span>';
+    if (t.out) {
+      var bits = [];
+      for (var k in t.out) { if (t.out[k] !== '' && t.out[k] !== null && t.out[k] !== '…') bits.push(k + '=' + t.out[k]); }
+      if (bits.length) html += '<span class="res ' + cls + '">' + esc(bits.slice(0, 3).join(' · ')) + '</span>';
+    }
+    if (!t.out) html += '<span class="res ' + cls + '">' + label + '</span>';
+    return html + '</div>';
+  }
+
+  function convHtml(c) {
+    var h = '<div class="conv"><div class="conv-head">';
+    h += '<span class="chip">' + esc(c.id) + '</span>';
+    h += '<span class="chip">' + esc(c.family) + '</span>';
+    h += '<span class="chip">' + esc(c.level_tr) + ' vaka</span>';
+    h += '<span class="chip">' + fmtDur(c.duration) + '</span>';
+    h += '<span class="chip">' + (c.tools || []).length + ' araç çağrısı</span>';
+    if (c.slowest_turn_s) h += '<span class="chip">en yavaş tur ' + c.slowest_turn_s + ' sn</span>';
+    h += '<span class="chip">' + esc(c.ended_tr || '') + '</span>';
+    h += '<span class="chip">call_id ' + esc(String(c.call_id).slice(0, 8)) + '…</span>';
+    h += '</div><div class="conv-body">';
+
+    (c.turns || []).forEach(function (t) {
+      if (t.k === 'say') {
+        var isA = t.who === 'assistant';
+        h += '<div class="say' + (isA ? '' : ' customer') + '">' +
+          '<span class="who">' + (isA ? 'AJAN' : 'MÜŞTERİ') + '</span>' +
+          '<div class="bubble">' + esc(t.text) + (t.t != null ? '<span class="t">' + t.t + ' sn</span>' : '') + '</div></div>';
+      } else if (t.k === 'tool') {
+        h += toolChip(t);
+      } else if (t.k === 'node') {
+        h += '<div class="node">' + esc(t.node) + '</div>';
+      } else if (t.k === 'end') {
+        h += '<div class="end">görüşme kapandı · ' + esc(c.ended_tr || t.outcome || '') + '</div>';
+      }
+    });
+    h += '</div>';
+
+    if (c.failed && c.failed.length) {
+      h += '<div class="conv-fail"><h4>Neden kaldı · hakem notu</h4><ul>';
+      c.failed.forEach(function (f) { h += '<li>' + esc(f) + '</li>'; });
+      h += '</ul></div>';
+    }
+    return h + '</div>';
+  }
+
+  /* ============================ is akisi ============================ */
+  var SCRIPT = [
+    { s: 0, cls: 'cmd', sim: 0, text: '$ python3 builder/final_case.py data/brief-demo.md', d: 700 },
+    { s: 0, src: 'girdi', sim: 4, text: 'brief okunuyor · data/brief-demo.md', d: 700 },
+    { s: 1, src: 'brief_parser', sim: 12, text: 'dosya okundu · 37 kural, 2 tablo, 1 uyarı bloğu', d: 800 },
+    { s: 1, src: 'brief_parser', cls: 'warn', sim: 7, text: 'çelişki: 12 Ekim 7. bölümde tatil, 12. bölümde değil', d: 800 },
+    { s: 2, src: 'policy_spec', sim: 10, text: '11 politika kuralı · 2 gecikme bandı · 6 sonuç', d: 800 },
+    { s: 2, src: 'policy_spec', sim: 6, text: 'son tarih kaynağı seçildi → 7. bölüm (banka tatili esas)', d: 800 },
+    { s: 3, src: 'workflow_builder', sim: 19, text: '9 düğüm kuruldu · setup → greeting → identity → hesap → pazarlık → söz → kapanış', d: 850 },
+    { s: 3, src: 'workflow_builder', sim: 9, text: 'araçlar: verify_identity · get_account · create_promise · schedule_callback · add_note · transfer_to_agent · close_call', d: 850 },
+    { s: 4, src: 'freya.save_workflow', sim: 13, text: 'agent_id alındı, ajan yayınlandı', d: 800 },
+    { s: 4, src: 'freya', cls: 'good', sim: 5, text: 'simülasyon başlatıldı · 10 sentetik müşteri', d: 800 }
+  ];
+
+  var STAGES = ['GİRDİ', 'PARSE', 'POLİTİKA', 'DERLEME', 'YAYINLA', 'TEST'];
+
+  var el = {
+    console: document.getElementById('console'), bar: document.getElementById('bar'),
+    stagebar: document.getElementById('stagebar'), start: document.getElementById('start'),
+    hint: document.getElementById('hint'), reset: document.getElementById('reset'),
+    sonuc: document.getElementById('sonuc'), tbody: document.getElementById('resultbody'),
+    passn: document.getElementById('passn'), pct: document.getElementById('pct'),
+    totaln: document.getElementById('totaln'), mnCases: document.getElementById('mn-cases'),
+    mnSecs: document.getElementById('mn-secs'), mnSlow: document.getElementById('mn-slow'),
+    mnTools: document.getElementById('mn-tools')
+  };
+
+  var speed = 1, running = false, timers = [], countTimer = null, openSet = {};
+
+  STAGES.forEach(function (name) {
+    var d = document.createElement('span');
+    d.className = 'stage'; d.textContent = name;
+    el.stagebar.appendChild(d);
+  });
+
+  function fmt(sec) {
+    var m = Math.floor(sec / 60), r = sec % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r;
+  }
+  function pad(s, n) { while (s.length < n) s += ' '; return s; }
+
+  function line(html, clock) {
+    var d = document.createElement('span');
+    d.className = 'line';
+    d.innerHTML = '<span class="t">' + clock + '</span>' + html;
+    el.console.appendChild(d);
+    el.console.scrollTop = el.console.scrollHeight;
+  }
+
+  function paintStage(cur) {
+    var nodes = el.stagebar.children;
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].className = 'stage' + (i < cur ? ' done' : i === cur ? ' now' : '');
+    }
+  }
+
+  function buildQueue() {
+    var q = SCRIPT.slice(), testSec = 0;
+    CASES.forEach(function (c) {
+      testSec += c.duration || 0;
+      q.push({
+        s: 5, cls: c.pass ? 'good' : 'bad', sim: c.duration || 30, d: c.pass ? 820 : 1300,
+        html: '<span class="src">' + c.id + '</span>' + pad(c.name, 24) +
+          (c.pass ? '<span class="badge pass">GEÇTİ</span>' : '<span class="badge fail">KALDI</span>') +
+          '  <span style="color:#6f8072">' + fmtDur(c.duration) + ' · ' + (c.tools || []).length + ' araç</span>'
+      });
+    });
+    q.push({ s: 5, src: 'skor', cls: 'good', sim: 18, d: 700,
+      html: '<span class="src">skor</span>' + CASES.filter(function (c) { return c.pass; }).length + ' / ' +
+        CASES.length + ' · %' + Math.round(CASES.filter(function (c) { return c.pass; }).length / CASES.length * 100) +
+        ' · koşu ' + fmt(testSec) });
+    return q;
+  }
+
+  function toggleConv(id, row) {
+    var next = row.nextElementSibling;
+    var isOpen = row.classList.contains('open');
+    if (isOpen) {
+      row.classList.remove('open');
+      if (next && next.classList.contains('convrow')) next.remove();
+      openSet[id] = false;
+    } else {
+      if (next && next.classList.contains('convrow')) next.remove();
+      var tr = document.createElement('tr');
+      tr.className = 'convrow';
+      tr.innerHTML = '<td colspan="6">' + convHtml(row._case) + '</td>';
+      row.parentNode.insertBefore(tr, row.nextSibling);
+      row.classList.add('open');
+      openSet[id] = true;
+    }
+  }
+
+  function renderResults() {
+    var passed = CASES.filter(function (c) { return c.pass; });
+    var totalSec = CASES.reduce(function (a, c) { return a + (c.duration || 0); }, 0);
+    var allTools = CASES.reduce(function (a, c) { return a + (c.tools || []).length; }, 0);
+    var slowest = CASES.reduce(function (a, c) { return Math.max(a, c.slowest_turn_s || 0); }, 0);
+
+    el.totaln.textContent = CASES.length;
+    el.mnCases.textContent = CASES.length;
+    el.mnSecs.textContent = fmtDur(totalSec);
+    el.mnSlow.textContent = slowest ? slowest + ' sn' : '—';
+    el.mnTools.textContent = allTools;
+
+    el.tbody.innerHTML = '';
+    CASES.forEach(function (c, i) {
+      var tr = document.createElement('tr');
+      tr.className = 'caserow' + (c.pass ? '' : ' failrow');
+      tr.style.opacity = '0';
+      tr.style.transform = 'translateY(5px)';
+      tr.style.transition = 'opacity .3s ease, transform .3s ease, background .15s';
+      tr._case = c;
+      tr.dataset.case = c.id;
+      tr.innerHTML =
+        '<td class="case-id">' + esc(c.id) + '</td>' +
+        '<td class="case-info"><b>' + esc(c.name) + '<span class="chev">&#9656;</span></b><small>' + esc(c.family) + '</small></td>' +
+        '<td class="case-id">' + fmtDur(c.duration) + '</td>' +
+        '<td>' + esc(outcomeLine(c)) + '</td>' +
+        '<td><span class="badge ' + (c.pass ? 'pass">GEÇTİ' : 'fail">KALDI') + '</span></td>' +
+        '<td><span class="go">SOHBETİ AÇ &#9656;</span></td>';
+      tr.addEventListener('click', function () { toggleConv(c.id, tr); });
+      el.tbody.appendChild(tr);
+      setTimeout(function () { tr.style.opacity = '1'; tr.style.transform = 'none'; }, 60 + i * 55);
+    });
+
+    el.sonuc.classList.remove('hidden');
+
+    var n = 0;
+    countTimer = setInterval(function () {
+      n += 1;
+      el.passn.textContent = n;
+      el.pct.textContent = Math.round(n / CASES.length * 100) + '%';
+      if (n >= passed.length) clearInterval(countTimer);
+    }, 110);
+  }
+
+  function stop() {
+    timers.forEach(clearTimeout); timers = [];
+    if (countTimer) { clearInterval(countTimer); countTimer = null; }
+    running = false;
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    el.start.disabled = true;
+    el.start.textContent = 'KOŞUYOR…';
+    el.hint.textContent = 'koşu sürüyor · ' + speed + 'x hız';
+    el.sonuc.classList.add('hidden');
+    el.console.innerHTML = '';
+    el.bar.style.width = '0%';
+    paintStage(0);
+
+    var queue = buildQueue(), simT = 0, at = 0;
+    queue.forEach(function (step, i) {
+      at += step.d / speed;
+      timers.push(setTimeout(function () {
+        simT += step.sim;
+        if (step.html) line(step.html, fmt(simT));
+        else if (step.cls === 'cmd') line('<span style="color:var(--lime)">' + esc(step.text) + '</span>', fmt(simT));
+        else line('<span class="src ' + (step.cls || '') + '">' + esc(step.src) + '</span>' + esc(step.text), fmt(simT));
+
+        paintStage(step.s);
+        el.bar.style.width = Math.round(((i + 1) / queue.length) * 100) + '%';
+
+        if (i === queue.length - 1) {
+          running = false;
+          el.start.disabled = false;
+          el.start.textContent = 'YENİDEN BAŞLAT';
+          el.hint.textContent = 'bitti · satıra tıklayıp sohbet kaydını aç';
+          renderResults();
+          el.sonuc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          var firstFail = CASES.filter(function (c) { return !c.pass; })[0];
+          if (firstFail) {
+            var row = el.tbody.querySelector('tr[data-case="' + firstFail.id + '"]');
+            if (row) setTimeout(function () { toggleConv(firstFail.id, row); }, 700);
+          }
+        }
+      }, at));
+    });
+  }
+
+  function reset() {
+    stop();
+    el.console.innerHTML = '<span class="line cmd">$ <span class="t">--:--</span>builder/final_case.py data/brief-demo.md<span class="t">  &#9654;  TESTİ BAŞLAT\'a bas</span></span>';
+    el.bar.style.width = '0%';
+    el.start.disabled = false;
+    el.start.textContent = 'TESTİ BAŞLAT';
+    el.hint.textContent = 'Gösterim koşusu · kayıtlar gerçek';
+    el.sonuc.classList.add('hidden');
+    el.passn.textContent = '0';
+    el.pct.textContent = '0%';
+    openSet = {};
+    paintStage(0);
+  }
+
+  el.start.addEventListener('click', start);
+  el.reset.addEventListener('click', reset);
+  document.querySelectorAll('.speed button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.speed button').forEach(function (o) { o.classList.toggle('on', o === b); });
+      speed = parseInt(b.dataset.speed, 10) || 1;
+      if (running) { stop(); reset(); el.hint.textContent = 'hız değişti · yeniden başlat'; }
+    });
+  });
+
+  /* ---------------------- veriyi yukle ---------------------- */
+  fetch('data/calls.json')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (doc) {
+      DOC = doc;
+      CASES = doc.calls.map(function (c) {
+        return {
+          id: c.id, name: c.family_tr, family: c.family, level_tr: c.level_tr,
+          pass: c.pass, failed: c.failed, tools: c.tools, turns: c.turns,
+          duration: c.duration, slowest_turn_s: c.slowest_turn_s,
+          ended_tr: c.ended_tr, call_id: c.call_id
+        };
+      });
+      el.start.disabled = false;
+      el.start.textContent = 'TESTİ BAŞLAT';
+      var p = CASES.filter(function (c) { return c.pass; }).length;
+      el.hint.textContent = CASES.length + ' gerçek kayıt hazır · ' + p + ' geçen / ' +
+        (CASES.length - p) + ' kalan · ' + DOC.source;
+    })
+    .catch(function (e) {
+      el.start.disabled = true;
+      el.hint.textContent = 'data/calls.json yüklenemedi (' + e.message + ') — /test üzerinden aç.';
+    });
+
+  paintStage(0);
+})();
+</script>
+</body>
+</html>
