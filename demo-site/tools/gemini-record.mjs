@@ -22,14 +22,24 @@ const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 
 function readKey() {
   if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY.trim();
-  const p = path.join(REPO, 'geminiapi.txt.txt');
-  if (fs.existsSync(p)) return fs.readFileSync(p, 'utf8').trim();
+  // Anahtar repoda degil, kullanici profilinde duruyor.
+  const home = process.env.USERPROFILE || process.env.HOME || '';
+  const candidates = [
+    home && path.join(home, '.secrets', 'gemini-api-key.txt'),
+    path.join(REPO, 'geminiapi.txt.txt'),
+  ].filter(Boolean);
+  for (const p of candidates) {
+    if (fs.existsSync(p)) return fs.readFileSync(p, 'utf8').trim();
+  }
   return '';
 }
 
 const key = readKey();
 if (!key) {
-  console.error('Gemini anahtari bulunamadi (GEMINI_API_KEY veya ../geminiapi.txt.txt).');
+  console.error('Gemini anahtari bulunamadi.');
+  console.error('  secenek 1: GEMINI_API_KEY ortam degiskeni');
+  console.error('  secenek 2: %USERPROFILE%\\.secrets\\gemini-api-key.txt');
+  console.error('  secenek 3 (eski yol): ../geminiapi.txt.txt');
   process.exit(1);
 }
 
